@@ -1,0 +1,74 @@
+.goal_calendar-container {
+    flex: 2;
+    width: 100%;
+    height: 600px;
+}
+
+.react-calendar {
+    width: 100% !important;
+    height: 100%;
+    background-color: #F1ECD9 !important;
+    font-family: 'nanum' !important;
+    border: none !important;
+    /* border-radius: 10px; */
+    /* box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); */
+}
+
+.react-calendar__tile {
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 80px;
+}
+
+.goal_tile-color-0 {
+    background-color: rgba(255, 165, 0, 0) !important;
+}
+
+.goal_tile-color-1 {
+    background-color: rgba(255, 165, 0, 0.2) !important;
+}
+
+.goal_tile-color-2 {
+    background-color: rgba(255, 165, 0, 0.4) !important;
+}
+
+.goal_tile-color-3 {
+    background-color: rgba(255, 165, 0, 0.6) !important;
+}
+
+.goal_tile-color-4 {
+    background-color: rgba(255, 165, 0, 0.8) !important;
+}
+
+.goal_tile-color-5 {
+    background-color: rgba(255, 165, 0, 1) !important;
+}
+
+/*오늘 날짜*/
+.react-calendar__tile--now {
+    background: #f5c0c0 !important;
+    color: #D10000 !important;
+    font-weight: bold !important;
+}
+
+/*선택한 날짜 (!important로 우선순위 높임)*/
+.react-calendar__tile--active {
+    background: #c0f5c0 !important;
+    color: rgb(3, 148, 3) !important;
+    font-weight: bold !important;
+}
+
+/* 년-월 */
+.react-calendar__navigation__label>span {
+    color: #000;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 140%;
+    font-family: 'nanum' !important;
+}
+
+.react-calendar__navigation {
+    margin-top: 15px;
+}

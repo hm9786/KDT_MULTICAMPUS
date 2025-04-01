@@ -1,0 +1,413 @@
+/* font */
+    /* src아래에 font 폴더를 만든 후, 폰트 저장 */
+    @font-face {
+        font-family: "montserrat";
+        src: url("../font/MONTSERRAT-REGULAR.TTF");
+    }
+      
+    @font-face {
+        font-family: "gmarket";
+        src: url("../font/GMARKETSANSTTFMEDIUM.TTF");
+    }
+      
+    @font-face {
+        font-family: "nanumsquarel";
+        src: url("../font/NANUMSQUAREL.TTF");
+    }
+      
+    @font-face {
+        font-family: "nanumsquarer";
+        src: url("../font/NANUMSQUARER.TTF");
+    }
+    
+/* page */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0px;
+    background-color: #F1ECD9;
+    overflow-y: overlay;
+}
+
+html {
+    overflow-y: hidden;
+}
+
+/* scroll bar */
+::-webkit-scrollbar {
+    width: 14px;
+    height: 14px;
+}
+
+::-webkit-scrollbar-thumb {
+    outline: none;
+    border-radius: 10px;
+    border: 4px solid transparent;
+    box-shadow: inset 6px 6px 0 rgba(34, 34, 34, 0.15);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    border: 4px solid transparent;
+    box-shadow: inset 6px 6px 0 rgba(34, 34, 34, 0.3);
+}
+
+::-webkit-scrollbar-track {
+    box-shadow: none;
+    background-color: transparent;
+}
+
+
+/* nav bar */
+.navbar-custom {
+    /* 화면 전체 차지 면적, 배경 색 */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 10%;
+    background-color: #34513A;
+    border-bottom: 1.5px solid #F1ECD9;
+    display: flex;
+    align-items: center;
+    padding-right:4vh;
+    padding-left:2vh;
+    z-index: 2500;
+}
+
+.navbar-custom .navbar-brand {
+    color: #F1ECD9;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+    transition: color 0.3s;
+    margin-right: 2vh;
+}
+
+.navbar-custom .nav-link,
+.navbar-custom .dropdown-toggle {
+    /* my page, mod */
+    color: #F1ECD9;
+    font-family: 'Montserrat', sans-serif;
+    transition: color 0.3s;
+}
+
+.navbar-custom .navbar-brand:hover,
+.navbar-custom .nav-link:hover,
+.navbar-custom .dropdown-toggle:hover {
+  color: #98B928;
+}
+
+.navbar-custom .navbar-brand,
+.navbar-custom .nav-link,
+.navbar-custom .dropdown-toggle {
+    color: #F1ECD9;
+    font-family: 'Montserrat', sans-serif;
+    transition: color 0.3s;
+    text-decoration: none; /* 밑줄 제거 */
+}
+
+
+.navbar-custom .navbar-collapse {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar-custom .navbar-left {
+    display: flex;
+    align-items: center;
+}
+
+
+.navbar-custom .navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* 오른쪽 요소 간 간격 */
+    margin-left: auto; /* 오른쪽 정렬 */
+    padding-right: 12vh;
+}
+
+.navbar-custom .navbar-right {
+    gap: 15px; /* 오른쪽 요소 간 간격 */
+}
+
+.me-2 {
+    padding: 4px;
+    border: none;
+    border-radius: 4px;
+    margin-right: 4px;
+}
+
+.me-2:focus {
+    border: 1px solid #F1ECD9;
+    outline: none; 
+}
+
+
+/* 검색 버튼 스타일 */
+.custom-search-button {
+    background-color: #F1ECD9 !important;
+    color: #34513A !important;
+    border: none !important;
+    font-family: 'NanumSquareL', sans-serif !important;
+    font-weight: bold !important;
+    padding: 5px 12px !important;
+    border-radius: 5px !important;
+    transition: background-color 0.3s, color 0.3s !important;
+}
+
+.custom-search-button:hover {
+    background-color: #98B928 !important;
+    color: black !important;
+}
+
+/* 알림 아이콘 및 프로필 드롭다운 스타일 */
+.notification-icon {
+    color: #98B928;
+}
+
+.notification-icon:hover {
+    color: #98B928;
+}
+
+
+/* drop 메뉴용 버튼?인가? */
+.profile-dropdown-toggle img {
+    border: 2px solid #F1ECD9;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+}
+
+.profile-dropdown-toggle:hover img {
+    border-color: #98B928;
+}
+
+
+/* 드롭다운 메뉴 스타일 */
+.dropdown-container {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin: 0;
+}
+
+.mod-text {
+    color: #F1ECD9; /* 텍스트 색상 */
+    font-family: 'montserrat', sans-serif; /* 폰트 설정 */
+    font-size: 15px;
+}
+
+.mod-text:hover {
+    color: #98B928; /* 텍스트 색상 */
+    font-family: 'montserrat', sans-serif; /* 폰트 설정 */
+    font-size: 15px;
+    transition: all .35s;
+}
+
+
+/* arrow */
+.dropdown-arrow {
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    margin-left: 5px;
+  }
+  
+  .dropdown-arrow-down {
+    border-top: 5px solid #F1ECD9; /* 드롭다운이 닫혔을 때 */
+  }
+  .dropdown-arrow-down:hover {
+    border-top: 5px solid #98B928; /* 드롭다운이 닫혔을 때 */
+  }
+  .dropdown-arrow-up {
+    border-bottom: 5px solid #F1ECD9; /* 드롭다운이 열렸을 때 */
+  }
+  
+
+/* 드롭다운 메뉴판 스타일 */
+.navbar-custom .dropdown-menu {
+    background-color: #34513A;
+    color: #F1ECD9;
+    border: 2px solid #CEC8B2;
+    border-radius: 1vh;
+    padding: 1vh;
+    position: absolute !important;
+    z-index: 1050 !important;
+    text-align: left; /* 왼쪽 정렬 */
+}
+
+.navbar-custom .dropdown-item {
+    color: #F1ECD9;
+    font-family: 'NanumSquareR', sans-serif;
+    display: block; /* 세로 정렬을 유지 */
+    text-align: left; /* 아이템 왼쪽 정렬 */
+    text-decoration: none; /* 밑줄 제거 */
+    margin: 1vh;
+}
+
+.navbar-custom .dropdown-item:hover {
+    color: #98B928;
+    /* background-color: #F1ECD9; */
+    transition: color .35s;
+}
+
+
+
+
+
+
+
+
+
+/* menuicon */
+input[id="menuicon"] {
+    display: none;
+}
+
+input[id="menuicon"] + label {    
+    display: block;
+    width: 30px;
+    height: 20px;
+    position: relative;
+    cursor: pointer;
+}
+
+input[id="menuicon"] + label span {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 3px;
+    border-radius: 30px;
+    background: #F1ECD9;  /* 메뉴 아이콘 색 */
+    transition: all .35s;
+}
+
+input[id="menuicon"] + label span:nth-child(1) {
+    top: 1%;
+}
+
+input[id="menuicon"] + label span:nth-child(2) {
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+input[id="menuicon"] + label span:nth-child(3) {
+    bottom: 1%;
+}
+
+input[id="menuicon"]:checked + label span:nth-child(1) {
+    top: 50%;
+    transform: translateY(-50%) rotate(45deg);
+}
+
+input[id="menuicon"]:checked + label span:nth-child(2) {
+    opacity: 0;
+}
+
+input[id="menuicon"]:checked + label span:nth-child(3) {
+    bottom: 50%;
+    transform: translateY(50%) rotate(-45deg);
+}
+
+div[class="sidebar"] {
+    width: 250px;
+    height: 100%;
+    top: 0;
+    position: fixed;
+    right: -250px; /* 기본적으로 오른쪽에 숨기기 */
+    transition: all .35s;
+}
+
+input[id="menuicon"]:checked + label + div {
+    right: 0; /* 사이드바가 열릴 때 */
+}
+
+/* side bar */
+.menuicon {
+    position: fixed;
+    top: 3.7vh;
+    right: 3vh;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    z-index: 3000;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    right: -250px;
+    width: 250px;
+    height: 100%;
+    background-color: #34513A;
+
+    border-left: 1.5px solid #F1ECD9;
+
+    transition: right 0.3s;
+    display: flex;
+    flex-direction: column;
+
+    z-index: 2000;
+
+}
+
+.sidebar.open {
+    right: 0; 
+}
+
+.title {
+    margin-left: 4vh;
+    margin-top: 13vh; /* 화면 높이의 13% */
+    margin-bottom: 4vh;
+    color: #F1ECD9;
+    font-family: 'montserrat';
+}
+
+.line {
+    margin-left: 4vh;
+    padding-bottom: 4vh;
+    color: #F1ECD9;
+    cursor: pointer;
+    font-family: 'gmarket';
+}
+
+.line:hover{
+    margin-left: 4vh;
+    padding-bottom: 4vh;
+    color: #98B928;
+    cursor: pointer;
+    font-family: 'gmarket';
+    transition: color 0.3s;
+}
+
+.flexGrow {
+    flex-grow: 1;
+}
+
+.center {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.logout {
+    cursor: pointer;
+    text-decoration: underline;
+    font-family: 'nanumsquarer';
+    color: #F1ECD9;
+    margin-right: 3vh;
+    margin-bottom: 3vh;
+}
+
+.logout:hover {
+    cursor: pointer;
+    text-decoration: underline;
+    font-family: 'nanumsquarer';
+    color: #98B928;
+    margin-right: 3vh;
+    margin-bottom: 3vh;
+    transition: color 0.3s;
+}

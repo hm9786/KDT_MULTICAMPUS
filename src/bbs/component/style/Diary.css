@@ -1,0 +1,92 @@
+/* Diary */
+
+.diary-container {
+  position: relative;
+  top: 13vh;
+}
+
+
+.diary-content { 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 20vh;
+  height: 100vh;
+  width: 100%;
+  transition: all .35s;
+  z-index: 0;
+}
+
+.diary-content.sidebar-open {
+  margin-left: -125px;
+}
+
+
+.diary-weather {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  margin-top: 2vh; /* 위쪽 여백 추가 */
+  margin-bottom: 2vh; /* 아래쪽 여백 추가 */
+}
+
+.diary-weather select {
+  margin-bottom: 1vh; /* select와 날씨 데이터 사이의 간격 조정 */
+  width: 100%; /* select 박스 너비를 부모 컨테이너에 맞춤 */
+  max-width: 300px; /* 최대 너비 설정 */
+}
+
+.diary-line-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; 
+  justify-content: flex-start; 
+}
+
+.diary-line {
+  font-family: gmarket;
+  text-align: left;
+  margin-left: 0;
+}
+
+
+.diary-title {
+  font-family: 'montserrat';
+  color: #70805D;
+}
+
+.diary-center { 
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.diary-reward { 
+  display: flex;
+  width: 45%;
+  padding: 5px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: 2px solid #70805D;
+  border-radius: 10px;
+}
+
+.diary-button-container {
+  flex-direction: row;
+  padding: 6vh;
+}
+
+.diary-padding-top {
+  padding: 7vh;
+}
+
+.diary-padding {
+  padding: 2vh;
+}
+
+.diary-padding-bottom {
+  padding: 3vh;
+}

@@ -1,0 +1,62 @@
+.close-icon-container {
+    display: flex;
+    justify-content: flex-end;
+    cursor: pointer;
+  }
+  
+  .close-icon {
+    color: gray;
+    font-size: 20px;
+    transition: color 0.3s ease; /* 부드러운 색 전환 효과 */
+  }
+  
+  .close-icon:hover {
+    color: black; /* 마우스를 올렸을 때 검정색으로 변환 */
+  }
+  
+
+  /* edit img modal */
+
+  /* Modal.css */
+
+.edit-img-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.edit-img-modal-content {
+  background: white;
+  padding: 20px;
+  width: 350px;
+  border-radius: 10px;
+}
+
+.edit-img-modal-button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 5px;
+}
+
+.edit-img-modal-close-icon-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.edit-img-modal-close-icon {
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.edit-img-modal-txt-line {
+  font-size: 15px;
+  font-family: NanumSquareL;
+  font-weight: bold;
+}

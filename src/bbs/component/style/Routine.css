@@ -1,0 +1,212 @@
+.routine-page {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.routine-title {
+  text-align: center;
+  margin-bottom: 15px;
+  font-family: 'montserrat';
+  color: #89892B;
+  font-weight: bold;
+}
+
+.routine-list {
+  width: 380px;
+  border-radius: 10px;
+  padding: 10px;
+  border: 1.5px solid #C57D75;
+  margin-bottom: 2vh;
+}
+
+.routine-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  background-color: #F1ECD9;
+  border-radius: 20px;
+  border: 3px solid #89892B;
+}
+
+.time {
+  font-weight: bold;
+  color: #4a5568;
+  padding: 10px;
+  text-align: center;
+}
+
+.task {
+  flex-grow: 1;
+  color: #4a5568; /* 글자색 */
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 0 10px 10px 0;
+}
+
+.action-button {
+  background-color: #f4f7fc;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-size: 18px;
+  color: #718096;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+}
+
+.action-button:hover {
+  background-color: #d1d5db;
+}
+
+.popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #F1ECD9;
+  border-radius: 20px;
+  width: 300px;
+  z-index: 1000;
+  border: 3px solid #89892B;
+  /* box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); */
+}
+
+.popup-content {
+  padding: 20px;
+  text-align: center;
+}
+
+.popup-content h3 {
+  margin-bottom: 20px;
+  font-size: 16px;
+  color: black; /* 글자 색 */
+  font-weight: bolder;
+}
+
+.popup-content ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  color: black; /* 글자 색 */
+  font-weight: bolder;
+}
+
+.popup-content ul li {
+  background-color: #F1ECD9;
+  margin: 5px 0;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.popup-content ul li:hover {
+  background-color: #89892B;
+}
+
+.close-button {
+  margin-top: 15px;
+  background-color: #F1ECD9;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 16px;
+  cursor: pointer;
+  color: #4a5568;
+  transition: background-color 0.3s;
+  color: black; /* 글자 색 */
+  font-weight: bolder;
+}
+
+.close-button:hover {
+  background-color: #89892B;
+}
+
+.add-button {
+  padding: 10px;
+  width: 100%;
+  background-color: #F1ECD9;
+  border-radius: 20px;
+  border: 3px solid #89892B;
+  /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
+}
+
+.add-button:hover {
+  background-color: #d1d5db;
+}
+
+input[type="checkbox"] {
+  appearance: none;
+  /* 기본 브라우저 스타일 제거 */
+  width: 20px;
+  height: 20px;
+  border-radius: 8px;
+  background-color: white;
+  /* 기본 배경색 */
+  cursor: pointer;
+}
+
+input[type="checkbox"]:checked {
+  background-color: #89892B;
+  /* 체크되었을 때 배경을 파란색으로 */
+  border-color: #007BFF;
+}
+
+input[type="checkbox"]:checked::after {
+  content: '✔';
+  color: white;
+  /* 체크 표시를 하얀색으로 */
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.time.completed,
+.task.completed {
+  text-decoration: line-through;
+  /* 중간에 실선 표시 */
+  color: #777;
+  /* 완료된 항목의 텍스트 색상을 더 흐리게 */
+}
+
+.save-button {
+  margin-top: 15px;
+  background-color: #F1ECD9;
+  border: none;
+  border-radius: 5px;
+  padding: 8px 16px;
+  cursor: pointer;
+  color: black; /* 글자 색 */
+  font-weight: bolder;
+  transition: background-color 0.3s;
+}
+
+.save-button:hover {
+  background-color: #89892B;
+}
+
+.button-container {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+  justify-content: center;
+}
+
+.chart-container {
+  width: 300px;
+  height: 300px;
+  margin: 0 auto;
+  padding-bottom: 20px;
+  border: 1px solid black;
+  margin-top: 2vh;
+  margin-bottom: 2vh;
+}
+
+.routine-padding-bottom{
+  padding: 15vh;
+}

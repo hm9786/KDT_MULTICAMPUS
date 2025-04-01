@@ -1,0 +1,224 @@
+/* profile */
+
+.profile-container {
+  position: relative;
+  top: 13vh;
+}
+
+.profile-content { 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 20vh;
+  height: 100vh;
+  width: 100%;
+  transition: all .35s;
+  z-index: 0;
+}
+
+.profile-content.sidebar-open {
+  margin-left: -125px;
+}
+
+.profile-title {
+  font-family: 'montserrat';
+  color: #70805D;
+}
+
+.profile-center { 
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-reward { 
+  display: flex;
+  width: 45%;
+  padding: 5px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: 2px solid #70805D;
+  border-radius: 10px;
+}
+
+.profile-padding-bottom {
+  padding: 4%;
+}
+
+
+/* EditImg */
+.edit-img-container {
+    display: flex;
+    align-items: center;
+}
+
+.edit-img-img-container {
+    position: relative;
+    display: inline-block;
+}
+
+.edit-img-img {
+    height: 200px;
+    width: 200px;
+    border-radius: 100%;
+    border: 5px solid #70805D;
+    background: white;
+    margin: 10px;
+}
+
+.edit-img-upload-button {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    height: 60px;
+    width: 60px;
+    border-radius: 100%;
+    background: #ebd6be;
+    padding: 3px;
+    cursor: pointer;
+}
+
+
+/* edit txt input */
+
+.edit-txt-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 45%;
+    padding: 5px;
+    border: 2px solid #70805D;
+    border-radius: 10px;
+  }
+  
+  .edit-txt-main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    width: 90%;
+    margin-left: 10%;
+  }
+  
+  .edit-txt-input,
+  .edit-txt-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+  }
+  
+  .edit-txt-input {
+    width: 90%;
+    margin: 5px;
+  }
+  
+  .edit-txt-button {
+    width: 5%;
+  }
+  
+  .edit-txt-display-nickname {
+    font-size: 20px;
+    font-family: montserrat;
+    font-weight: bold;
+    color: #89892B;
+  }
+  
+  .edit-txt-display-bio {
+    font-size: 14px;
+    font-family: nanumsquarel;
+    color: gray;
+    font-weight: bold;
+  }
+  
+  .edit-txt-button-container {
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    flex-direction: row;
+    width: 20%;
+  }
+  
+  .edit-txt-edit-button,
+  .edit-txt-save-button,
+  .edit-txt-cancel-button {
+    cursor: pointer;
+    opacity: 50%;
+  }
+  
+  .edit-txt-edit-button {
+    width: 18px;
+    height: 18px;
+    margin-right: 10px;
+  }
+  
+  .edit-txt-save-button {
+    width: 18px;
+    height: 18px;
+    margin-right: 10px;
+  }
+  
+  .edit-txt-cancel-button {
+    width: 15px;
+    height: 15px;
+  }
+  
+
+  /* reward */
+.reward-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.reward-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: montserrat;
+  font-weight: bold;
+  font-size: 16px;
+  padding-top: 10px;
+}
+
+.reward-start,
+.reward-point-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: nanumsquarer;
+  padding: 10px;
+}
+
+.reward-point-display {
+  font-size: 14px;
+}
+
+.reward-img-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+}
+
+.reward-img {
+  width: 150px;
+  border: 3px solid #89892B;
+  border-radius: 20px;
+  background: white;
+}
+
+.reward-line {
+  font-family: nanumsquarer;
+  font-size: 14px;
+}
+
+.reward-level {
+  font-family: nanumsquarer;
+  font-weight: bold;
+  font-size: 16px;
+}

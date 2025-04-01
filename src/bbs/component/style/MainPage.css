@@ -1,0 +1,18 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 110px; 
+    padding-bottom: 20px;
+    height: calc(100vh - 130px); 
+    width: 100vw;
+    overflow: hidden;
+    transition: all .35s;
+
+}
+
+.container.sidebar-open {
+    width: calc(100vw - 250px);
+    margin-right: 250px;
+}

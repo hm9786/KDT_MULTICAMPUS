@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.test23.mappers.UserMapper">
+
+    <!-- 사용자 정보 삽입 -->
+    <insert id="insertUser" parameterType="com.example.test23.entity.User">
+        INSERT INTO user (user_name, password, nickname, user_id)
+        VALUES (#{user_name}, #{password}, #{nickname}, #{user_id});
+    </insert>
+    
+    <!-- 회원 ID로 사용자 정보 조회 (중복 확인용) -->
+    <select id="selectUserByUserId" parameterType="string" resultType="com.example.test23.entity.User">
+        SELECT * FROM user WHERE user_id = #{user_id};
+    </select>
+
+    <!-- 사용자 정보 업데이트 -->
+    <update id="updateUser" parameterType="com.example.test23.entity.User">
+        UPDATE user
+        SET user_name = #{user_name},
+            password = #{password},
+            nickname = #{nickname}
+        WHERE user_UN = #{user_UN};
+    </update>
+
+    <!-- 사용자 ID로 사용자 정보 삭제 -->
+    <delete id="deleteUserById" parameterType="long">
+        DELETE FROM user WHERE user_UN = #{user_UN};
+    </delete>
+
+    <!-- 회원 ID 중복 확인 -->
+    <select id="existsByUserId" parameterType="string" resultType="int">
+        SELECT COUNT(*) FROM user WHERE user_id = #{user_id}
+    </select>
+
+    <!-- 로그인 -->
+    <select id="findByUserId" parameterType="String" resultType="com.example.test23.entity.UserRequest">
+        SELECT user_UN, user_name, password, nickname, user_id
+        FROM user
+        WHERE user_id = #{userId} 
+    </select>
+
+</mapper>

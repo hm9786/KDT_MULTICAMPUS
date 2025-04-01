@@ -1,0 +1,112 @@
+/* side bar */
+.menuicon {
+    position: fixed;
+    top: 3.7vh;
+    right: 3vh;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    z-index: 3000;
+}
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    top: 0;
+    right: -250px;
+    width: 250px;
+    height: 100%;
+    background-color: #34513A;
+
+    border-left: 1.5px solid #F1ECD9;
+
+    transition: right 0.3s;
+    display: flex;
+    flex-direction: column;
+
+    z-index: 2000;
+
+}
+
+.sidebar.open {
+    right: 0; 
+}
+
+.user-info{
+    display: flex;
+    flex-direction: column;
+    margin-left: 4vh;
+}
+
+.profile-picture{
+    border: 2px solid #F1ECD9;
+    border-radius: 100%;
+    background-color: white;
+    margin-bottom: 2vh;
+}
+
+.user-nickname{
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 25px;
+    font-weight: bold;
+    font-family: 'montserrat';
+    color: #F1ECD9;
+    margin-bottom: 2vh;
+
+}
+
+.cal-line{
+    font-family: 'montserrat', 'nanumsquarer';
+    color: #F1ECD9;
+    margin-bottom: 2vh;
+}
+
+.weather-info{
+    display: flex;
+    flex-direction: column;
+    margin-left: 4vh;
+    margin-top: 0;
+    margin-bottom: 4vh;
+
+}
+
+.weather-icon{
+    width: 10vh;
+    height: 10vh;
+}
+
+.date-info{
+    display: flex;
+    flex-direction: column;
+    margin-left: 4vh;
+    margin-top: 0;
+    margin-bottom: 14vh;
+    border: 1px solid #444;
+}
+
+.date-line{
+    font-family: 'nanumsquarel';
+    color: #F1ECD9;
+    margin-bottom: 2vh;
+}
+
+.logout {
+    cursor: pointer;
+    text-decoration: underline;
+    font-family: 'nanumsquarer';
+    color: #F1ECD9;
+    margin-right: 3vh;
+    margin-bottom: 3vh;
+}
+
+.logout:hover {
+    cursor: pointer;
+    text-decoration: underline;
+    font-family: 'nanumsquarer';
+    color: #98B928;
+    margin-right: 3vh;
+    margin-bottom: 3vh;
+    transition: color 0.3s;
+}
