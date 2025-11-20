@@ -3,6 +3,7 @@ import NewPwdInput from "../../ui/input/NewPwdInput";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
+import API_BASE_URL from "../../../utils/api";
 
 function EditPwd({ userid }) { // userId를 props로 전달받는다고 가정
 
@@ -50,7 +51,7 @@ function EditPwd({ userid }) { // userId를 props로 전달받는다고 가정
     } else {
       setError('');
       try {
-        const response = await axios.post('/YOUR_BACKEND_API/change-password', {
+        const response = await axios.post(`${API_BASE_URL}/users/change-password`, {
           userId: userid,
           password: newpwd,
         });

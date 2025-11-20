@@ -6,6 +6,7 @@ import '../../style/Modal.css';
 
 import Button from '../button/Button';
 import axios from 'axios';
+import API_BASE_URL from '../../../utils/api';
 
 function LogoutModal({ show, onConfirm, onCancel }) {
   if (!show) return null;
@@ -13,13 +14,16 @@ function LogoutModal({ show, onConfirm, onCancel }) {
   const logoutHandler = async() =>{
     try {
       // 서버에 로그아웃 요청
-      await axios.post('/YOUR_BACKEND_API/logout');
+      await axios.post(`${API_BASE_URL}/users/logout`);
       // 로그아웃 완료 후 상태 업데이트
+      localStorage.removeItem('userId');
       onConfirm();
 
     } catch (e) {
       console.error('로그아웃 오류', e);
-      alert('로그아웃 중 오류가 발생했습니다.');
+      // 로그아웃 실패해도 로컬 스토리지 정리
+      localStorage.removeItem('userId');
+      onConfirm();
     }
   }
 

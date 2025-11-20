@@ -33,9 +33,12 @@ public class UserController {
 
             // 사용자 정보 저장
             User newUser = userService.saveUser(user);
+            
+            // 저장 후 user_UN을 가져오기 위해 다시 조회
+            User savedUser = userService.getUserByUserId(newUser.getUser_id());
 
-            // 응답 생성 및 반환
-            return ResponseEntity.ok(Collections.singletonMap("userId", newUser.getUser_id()));
+            // 응답 생성 및 반환 (user_UN 반환)
+            return ResponseEntity.ok(Collections.singletonMap("user_UN", savedUser.getUser_UN()));
         } catch (Exception e) {
             e.printStackTrace(); // 서버 콘솔에 오류 출력
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("회원가입 중 오류가 발생하였습니다.");
@@ -133,6 +136,69 @@ public class UserController {
             return ResponseEntity.ok(userResponse);
         }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null); // 로그인하지 않았을 때
+    }
+
+    // 비밀번호 확인
+    @PostMapping("/check-password")
+    public ResponseEntity<Map<String, Boolean>> checkPassword(@RequestBody Map<String, String> request) {
+        try {
+            String userId = request.get("userId");
+            String password = request.get("password");
+            
+            if (userId == null || password == null) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(Collections.singletonMap("success", false));
+            }
+            
+            boolean isValid = userService.checkPassword(userId, password);
+            return ResponseEntity.ok(Collections.singletonMap("success", isValid));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Collections.singletonMap("success", false));
+        }
+    }
+
+    // 비밀번호 변경
+    @PostMapping("/change-password")
+    public ResponseEntity<Map<String, Boolean>> changePassword(@RequestBody Map<String, String> request) {
+        try {
+            String userId = request.get("userId");
+            String newPassword = request.get("password");
+            
+            if (userId == null || newPassword == null) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(Collections.singletonMap("success", false));
+            }
+            
+            boolean success = userService.changePassword(userId, newPassword);
+            return ResponseEntity.ok(Collections.singletonMap("success", success));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Collections.singletonMap("success", false));
+        }
+    }
+
+    // 계정 삭제
+    @DeleteMapping("/delete-account")
+    public ResponseEntity<Map<String, Boolean>> deleteAccount(@RequestBody Map<String, String> request) {
+        try {
+            String userId = request.get("userId");
+            String password = request.get("password");
+            
+            if (userId == null || password == null) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .body(Collections.singletonMap("success", false));
+            }
+            
+            boolean success = userService.deleteAccount(userId, password);
+            return ResponseEntity.ok(Collections.singletonMap("success", success));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Collections.singletonMap("success", false));
+        }
     }
     
 }

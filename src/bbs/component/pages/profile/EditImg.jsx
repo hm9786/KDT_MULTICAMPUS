@@ -2,15 +2,33 @@
 import { useState, useRef, useEffect } from "react"; 
 import EditImgModal from "../../ui/modal/EditImgModal";
 import axios from 'axios';
+import API_BASE_URL from '../../../utils/api';
 import '../../style/Profile.css';
 
 function EditImg() {
 
     const defaultImg = process.env.PUBLIC_URL + '/img/profile/default-img.png';
+    const userId = parseInt(localStorage.getItem('userId') || '0');
 
     const [profileImgUrl, setProfileImgUrl] = useState(defaultImg);
     const [showModal, setShowModal] = useState(false);
-    const fileInputRef = useRef(null); 
+    const fileInputRef = useRef(null);
+
+    // 프로필 이미지 로드
+    useEffect(() => {
+        const fetchProfileImage = async () => {
+            if (!userId) return;
+            try {
+                const response = await axios.get(`${API_BASE_URL}/users/${userId}/profile`);
+                if (response.data && response.data.profilePicture) {
+                    setProfileImgUrl(`http://localhost:8001${response.data.profilePicture}`);
+                }
+            } catch (error) {
+                console.error('프로필 이미지 로드 실패:', error);
+            }
+        };
+        fetchProfileImage();
+    }, [userId]); 
 
     const updateHandler = async (e) => {
         const file = e.target.files[0];
@@ -20,15 +38,19 @@ function EditImg() {
             setProfileImgUrl(imgUrl);
 
             const formData = new FormData();
-            formData.append('image', file);
+            formData.append('file', file);
 
             try {
-                await axios.post('/YOUR_BACKEND_API/upload-image', formData, {
+                const response = await axios.post(`${API_BASE_URL}/users/${userId}/profile-image`, formData, {
                     headers: { 'Content-Type': 'multipart/form-data' },
                 });
-                console.log('Image uploaded successfully');
+                console.log('Image uploaded successfully', response.data);
+                if (response.data.imageUrl) {
+                    setProfileImgUrl(`http://localhost:8001${response.data.imageUrl}`);
+                }
             } catch (error) {
                 console.error('Image upload failed', error);
+                alert('이미지 업로드에 실패했습니다.');
             }
         }
     };

@@ -23,10 +23,10 @@ const Popup = ({
   return (
     <div className="popup">
       <div className="popup-content">
-        <h3>{`${selectedRoutine.time.toLocaleTimeString([], {
+        <h3>{`${selectedRoutine.time ? (typeof selectedRoutine.time === 'string' ? selectedRoutine.time : new Date('2000-01-01T' + selectedRoutine.time).toLocaleTimeString([], {
           hour: '2-digit',
           minute: '2-digit',
-        })} ${selectedRoutine.task}`}</h3>
+        })) : '시간 미설정'} ${selectedRoutine.title || selectedRoutine.task}`}</h3>
         {EditingTask ? (
           <div>
             <input

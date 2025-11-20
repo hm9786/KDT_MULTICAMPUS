@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import AppNavbar from "../../../ui/bar/AppNavbar";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
+import API_BASE_URL from '../../../../utils/api';
 import '../../../style/Page.css';
 import '../../../style/Diary.css';
 
@@ -37,27 +38,26 @@ function StarAvg({ userid, date }) {
     useEffect(() => {
         async function fetchDiaryScores() {
             try {
-                const response = await axios.get(`/api/diary/scores/${userid}`);
-                const diaryEntries = response.data;
+                const targetDateObj = new Date(date);
+                const weekAgo = new Date(targetDateObj);
+                weekAgo.setDate(weekAgo.getDate() - 6);
+                const monthAgo = new Date(targetDateObj);
+                monthAgo.setMonth(monthAgo.getMonth() - 1);
 
-                const targetDate = new Date(date);
-                const weeklyEntries = diaryEntries.filter(entry => {
-                    const entryDate = new Date(entry.date);
-                    return (targetDate - entryDate) / (1000 * 60 * 60 * 24) <= 7; // 7일 이내
+                // 주간 평균
+                const weeklyResponse = await axios.get(
+                    `${API_BASE_URL}/diaries/user/${userid}/average-rating?startDate=${weekAgo.toISOString().split('T')[0]}&endDate=${targetDateObj.toISOString().split('T')[0]}`
+                );
+                
+                // 월간 평균
+                const monthlyResponse = await axios.get(
+                    `${API_BASE_URL}/diaries/user/${userid}/average-rating?startDate=${monthAgo.toISOString().split('T')[0]}&endDate=${targetDateObj.toISOString().split('T')[0]}`
+                );
+
+                setAverageScore({
+                    weekly: weeklyResponse.data.averageRating || 0,
+                    monthly: monthlyResponse.data.averageRating || 0
                 });
-                const monthlyEntries = diaryEntries.filter(entry => {
-                    const entryDate = new Date(entry.date);
-                    return (targetDate - entryDate) / (1000 * 60 * 60 * 24) <= 30; // 30일 이내
-                });
-
-                const weeklyAverage = weeklyEntries.length > 0 
-                    ? weeklyEntries.reduce((sum, entry) => sum + entry.score, 0) / weeklyEntries.length
-                    : 0;
-                const monthlyAverage = monthlyEntries.length > 0 
-                    ? monthlyEntries.reduce((sum, entry) => sum + entry.score, 0) / monthlyEntries.length
-                    : 0;
-
-                setAverageScore({ weekly: weeklyAverage, monthly: monthlyAverage });
             } catch (error) {
                 console.error("점수를 불러오는 중 오류가 발생했습니다:", error);
             }

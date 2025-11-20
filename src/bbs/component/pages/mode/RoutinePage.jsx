@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import API_BASE_URL from '../../../utils/api';
 import AppNavbar from '../../ui/bar/AppNavbar';
 import ProfileSidebar from '../../ui/bar/ProfileSidebar';
 // import RoutineChart from './RoutineChart';
@@ -24,7 +25,8 @@ function RoutinePage() {
 
     const fetchRoutines = async () => {
         try {
-            const response = await axios.get('/api/routines');
+            const userId = parseInt(localStorage.getItem('userId') || '0');
+            const response = await axios.get(`${API_BASE_URL}/routines/user/${userId}`);
             setRoutines(response.data);
         } catch (error) {
             console.error('루틴 데이터를 가져오는 중 오류 발생:', error);

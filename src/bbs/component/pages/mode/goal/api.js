@@ -1,9 +1,10 @@
 import axios from 'axios';
+import API_BASE_URL from '../../../../utils/api';
 
 // 총 시간을 데이터베이스에 저장하는 함수
-export const saveTotalTimeToDB = async (totalTime) => {
+export const saveTotalTimeToDB = async (goalId, taskId, totalTime) => {
     try {
-        await axios.post('/api/save-time', { totalTime });
+        await axios.put(`${API_BASE_URL}/goals/tasks/${taskId}`, { total_time: totalTime });
         return true;
     } catch (error) {
         console.error('Error saving total time:', error);
@@ -11,46 +12,77 @@ export const saveTotalTimeToDB = async (totalTime) => {
     }
 };
 
-// 목표와 작업을 서버에서 가져오는 함수 (axios 사용)
-export const GoalData = async () => {
+// 목표와 작업을 서버에서 가져오는 함수
+export const GoalData = async (userId) => {
     try {
-        const response = await axios.get('/api/goal'); // 서버 엔드포인트
-        return response.data; // 응답 데이터 반환 (예: { goalTitle, targetDate })
+        const response = await axios.get(`${API_BASE_URL}/goals/user/${userId}`);
+        if (response.data && response.data.length > 0) {
+            const goal = response.data[0];
+            return {
+                goalId: goal.goal_id,
+                goalTitle: goal.title,
+                targetDate: goal.target_date
+            };
+        }
+        return { goalId: null, goalTitle: '', targetDate: null };
     } catch (error) {
         console.error('Error fetching goal data:', error);
-        throw error; // 오류가 발생하면 예외를 던짐
+        return { goalId: null, goalTitle: '', targetDate: null };
     }
 };
 
-// DB에서 totalTime 가져오기 (axios 사용)
-export const totalTimeFromDB = async () => {
+// DB에서 totalTime 가져오기
+export const totalTimeFromDB = async (goalId, date) => {
     try {
-        const response = await axios.get('/api/getTotalTime'); // 서버 API 호출
-        return response.data.totalTime || 0; // totalTime을 반환
+        const response = await axios.get(`${API_BASE_URL}/goals/${goalId}/tasks/date?task_date=${date}`);
+        if (response.data && response.data.length > 0) {
+            return response.data.reduce((sum, task) => sum + (task.total_time || 0), 0);
+        }
+        return 0;
     } catch (error) {
         console.error('Error fetching total time from DB:', error);
-        return 0; // 에러 발생 시 0 반환
+        return 0;
     }
 };
 
 // 날짜를 서버에서 가져오는 함수
-export const TasksForDate = async (date) => {
+export const TasksForDate = async (goalId, date) => {
     try {
-        const response = await axios.get(`/api/tasks/${date}`);
-        return response.data;
+        const response = await axios.get(`${API_BASE_URL}/goals/${goalId}/tasks/date?task_date=${date}`);
+        return response.data.map(task => ({
+            id: task.task_id,
+            task: task.task_name,
+            completed: task.completed,
+            totalTime: task.total_time || 0
+        }));
     } catch (error) {
         console.error('Error fetching tasks for selected date:', error);
-        throw error;
+        return [];
     }
 };
 
-export const CumulativeTime = async (month) => {
+export const CumulativeTime = async (goalId, month) => {
     try {
-        const response = await axios.get(`/api/cumulative-time/${month}`);
-        return response.data;
+        const response = await axios.get(`${API_BASE_URL}/goals/${goalId}/total-time?month=${month}`);
+        const totalTime = response.data.totalTime || 0;
+        
+        // 해당 월의 모든 작업을 가져와서 날짜별로 그룹화
+        const tasksResponse = await axios.get(`${API_BASE_URL}/goals/${goalId}/tasks`);
+        const tasks = tasksResponse.data || [];
+        
+        const timeByDate = {};
+        tasks.forEach(task => {
+            const taskMonth = task.task_date.substring(0, 7);
+            if (taskMonth === month) {
+                const date = task.task_date;
+                timeByDate[date] = (timeByDate[date] || 0) + (task.total_time || 0);
+            }
+        });
+        
+        return timeByDate;
     } catch (error) {
         console.error('Error fetching cumulative time:', error);
-        throw error;
+        return {};
     }
 };
 

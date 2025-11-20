@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import API_BASE_URL from "../../../utils/api";
 import '../../style/Profile.css';
 
 function Reward({ userId }) {
@@ -11,7 +12,7 @@ function Reward({ userId }) {
     console.log('Reward User ID:', userId);
     const fetchPoint = async () => {
       try {
-        const response = await axios.get(`/reward/${userId}`);
+        const response = await axios.get(`${API_BASE_URL}/reward/${userId}`);
         setPoint(response.data.points || 0); // 서버에서 반환된 포인트 값 설정
       } catch (error) {
         console.error("포인트를 가져오는 데 실패했습니다:", error);

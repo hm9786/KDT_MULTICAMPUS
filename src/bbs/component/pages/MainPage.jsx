@@ -5,6 +5,7 @@ import AppNavbar from '../ui/bar/AppNavbar';
 import CalendarSidebar from '../ui/bar/CalendarSidebar';
 import EventModal from '../ui/modal/EventModal';
 import axios from 'axios';
+import API_BASE_URL from '../../../utils/api';
 import '../style/MainPage.css';
 
 function MainPage({ userId }) {
@@ -65,37 +66,55 @@ function MainPage({ userId }) {
     setShowEventModal(true);
   };
 
+  useEffect(() => {
+    // 알림 권한 요청
+    if ('Notification' in window && Notification.permission === 'default') {
+      Notification.requestPermission();
+    }
+  }, []);
+
   const scheduleNotifications = (events) => {
     const now = new Date();
     events.forEach((event) => {
-      const eventStart = new Date(event.start);
-      const notificationTimes = [
-        { time: new Date(eventStart - 30 * 60000), message: `30분 후 ${event.title} 시작` },
-        { time: new Date(eventStart - 15 * 60000), message: `15분 후 ${event.title} 시작` },
-        { time: new Date(eventStart - 5 * 60000), message: `5분 후 ${event.title} 시작` },
-      ];
+      if (event.start_time) {
+        const [hours, minutes] = event.start_time.split(':');
+        const eventStart = new Date(event.start);
+        eventStart.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+        
+        const notificationTimes = [
+          { time: new Date(eventStart.getTime() - 30 * 60000), message: `30분 후 ${event.title} 시작` },
+          { time: new Date(eventStart.getTime() - 15 * 60000), message: `15분 후 ${event.title} 시작` },
+          { time: new Date(eventStart.getTime() - 5 * 60000), message: `5분 후 ${event.title} 시작` },
+        ];
 
-      notificationTimes.forEach((notification) => {
-        const delay = notification.time - now;
-        if (delay > 0) {
-          setTimeout(() => {
-            setNotifications(prev => [...prev, notification.message]);
-          }, delay);
-        }
-      });
+        notificationTimes.forEach((notification) => {
+          const delay = notification.time.getTime() - now.getTime();
+          if (delay > 0) {
+            setTimeout(() => {
+              if (Notification.permission === 'granted') {
+                new Notification('일정 알림', {
+                  body: notification.message,
+                  icon: '/logo192.png'
+                });
+              }
+              setNotifications(prev => [...prev, notification.message]);
+            }, delay);
+          }
+        });
+      }
     });
   };
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(`/home?userId=${userId}`);
+        const response = await axios.get(`${API_BASE_URL}/home?userId=${userId}`);
         const { routineEvents, goalEvents, diaryEvents, points } = response.data;
 
         const allEvents = [
-          ...routineEvents.map(event => ({ ...event, type: 'routine', color: 'green', icon: '📅' })),
-          ...goalEvents.map(event => ({ ...event, type: 'goal', color: 'blue', icon: '🎯' })),
-          ...diaryEvents.map(event => ({ ...event, type: 'diary', color: 'purple', icon: '📖' }))
+          ...routineEvents.map(event => ({ ...event, type: 'routine', color: event.color || 'green', icon: '📅' })),
+          ...goalEvents.map(event => ({ ...event, type: 'goal', color: event.color || 'blue', icon: '🎯' })),
+          ...diaryEvents.map(event => ({ ...event, type: 'diary', color: event.color || 'purple', icon: '📖' }))
         ];
 
         setUserEvents(allEvents);
@@ -108,8 +127,13 @@ function MainPage({ userId }) {
 
     const fetchHolidays = async () => {
       try {
+        const apiKey = import.meta.env.VITE_PUBLIC_DATA_API_KEY;
+        if (!apiKey || apiKey === 'YOUR_API_KEY') {
+          console.warn('공공데이터포털 API 키가 설정되지 않았습니다. 공휴일 정보를 불러올 수 없습니다.');
+          return;
+        }
         const response = await fetch(
-          'https://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getRestDeInfo?ServiceKey=YOUR_API_KEY&solYear=2024&numOfRows=100'
+          `https://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getRestDeInfo?ServiceKey=${apiKey}&solYear=2024&numOfRows=100`
         );
         const textData = await response.text();
         const parser = new DOMParser();
@@ -139,8 +163,30 @@ function MainPage({ userId }) {
 
   const addEvent = async (newEvent) => {
     try {
-      const response = await axios.post('/home/events', { ...newEvent, userId });
-      setUserEvents([...userEvents, response.data]);
+      const scheduleData = {
+        user_UN: userId,
+        title: newEvent.title,
+        description: newEvent.description || '',
+        start_date: newEvent.start,
+        end_date: newEvent.end || newEvent.start,
+        start_time: newEvent.start_time || null,
+        end_time: newEvent.end_time || null,
+        location: newEvent.location || '',
+        latitude: newEvent.latitude || null,
+        longitude: newEvent.longitude || null,
+        mode: newEvent.mode || 'default',
+        color: newEvent.color || '#667eea'
+      };
+      const response = await axios.post(`${API_BASE_URL}/schedules`, scheduleData);
+      const addedEvent = {
+        id: response.data.schedule_id,
+        title: response.data.title,
+        start: response.data.start_date,
+        end: response.data.end_date,
+        color: response.data.color,
+        mode: response.data.mode
+      };
+      setUserEvents([...userEvents, addedEvent]);
       updateUserPoints(10);
     } catch (error) {
       console.error('Error adding event:', error);
@@ -149,7 +195,22 @@ function MainPage({ userId }) {
 
   const updateEvent = async (updatedEvent) => {
     try {
-      await axios.put(`/home/events/${updatedEvent.id}`, updatedEvent);
+      const scheduleData = {
+        schedule_id: updatedEvent.id,
+        user_UN: userId,
+        title: updatedEvent.title,
+        description: updatedEvent.description || '',
+        start_date: updatedEvent.start,
+        end_date: updatedEvent.end || updatedEvent.start,
+        start_time: updatedEvent.start_time || null,
+        end_time: updatedEvent.end_time || null,
+        location: updatedEvent.location || '',
+        latitude: updatedEvent.latitude || null,
+        longitude: updatedEvent.longitude || null,
+        mode: updatedEvent.mode || 'default',
+        color: updatedEvent.color || '#667eea'
+      };
+      await axios.put(`${API_BASE_URL}/schedules/${updatedEvent.id}`, scheduleData);
       setUserEvents(userEvents.map(event => (event.id === updatedEvent.id ? updatedEvent : event)));
       updateUserPoints(5);
     } catch (error) {
@@ -159,7 +220,7 @@ function MainPage({ userId }) {
 
   const deleteEvent = async (eventId) => {
     try {
-      await axios.delete(`/home/events/${eventId}`);
+      await axios.delete(`${API_BASE_URL}/schedules/${eventId}`);
       setUserEvents(userEvents.filter(event => event.id !== eventId));
     } catch (error) {
       console.error('Error deleting event:', error);

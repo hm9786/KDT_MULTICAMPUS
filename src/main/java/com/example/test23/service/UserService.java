@@ -88,4 +88,61 @@ public class UserService {
         }
         return response;
     }
+
+    // 비밀번호 확인
+    public boolean checkPassword(String userId, String password) {
+        try {
+            UserRequest user = userMapper.findByUserId(userId);
+            if (user == null) {
+                return false;
+            }
+            return passwordEncoder.matches(password, user.getPassword());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // 비밀번호 변경
+    public boolean changePassword(String userId, String newPassword) {
+        try {
+            UserRequest user = userMapper.findByUserId(userId);
+            if (user == null) {
+                return false;
+            }
+            
+            User updateUser = new User();
+            updateUser.setUser_UN(user.getUserUN());
+            updateUser.setUser_id(userId);
+            updateUser.setPassword(passwordEncoder.encode(newPassword));
+            
+            userMapper.updateUser(updateUser);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // 계정 삭제 (비밀번호 확인 후)
+    public boolean deleteAccount(String userId, String password) {
+        try {
+            // 비밀번호 확인
+            if (!checkPassword(userId, password)) {
+                return false;
+            }
+            
+            UserRequest user = userMapper.findByUserId(userId);
+            if (user == null) {
+                return false;
+            }
+            
+            // 사용자 삭제
+            userMapper.deleteUserById(user.getUserUN().longValue());
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

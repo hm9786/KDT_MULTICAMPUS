@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import API_BASE_URL from "../../../utils/api";
 import HomeInput from "../../ui/input/HomeInput";
 import PwdInput from "../../ui/input/PwdInput";
 import HomeButton from "../../ui/button/HomeButton";
@@ -35,20 +36,22 @@ function Login() {
       const loginData = { userId: userid, password: pwd }; // 필드 이름 수정
 
       try {
-        const response = await axios.post('http://localhost:8001/api/users/login', loginData);
+        const response = await axios.post(`${API_BASE_URL}/users/login`, loginData);
         const data = response.data;
 
-        if (response.status === 200) {
-          localStorage.setItem('userId', data.userUN);    // userId를 localStorage에 저장
+        if (response.status === 200 && data.message === "로그인 성공") {
+          localStorage.setItem('userId', data.userUN.toString());    // userId를 localStorage에 저장
           navigate(`/calendar/${data.userUN}`);           // 해당 사용자 페이지로 이동
         } else {
           alert(data.message || '로그인에 실패했습니다.');  // 오류 메시지 처리
         }
       } catch (error) {
         console.error('Error:', error);
-        alert('로그인 중 오류가 발생했습니다.');
-        alert(`아이디: ${userid}, 비밀번호:${pwd}`); //확인용
-
+        if (error.response && error.response.data && error.response.data.message) {
+          alert(error.response.data.message);
+        } else {
+          alert('로그인 중 오류가 발생했습니다.');
+        }
       }
     }
   };
@@ -114,12 +117,17 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
     height: '100vh',
-    background: '#F1ECD9',
+    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    padding: '20px',
   },
 
   title:{
     fontFamily:'montserrat',
-    color: '#34513A',
+    color: '#ffffff',
+    fontSize: '2.5rem',
+    fontWeight: 'bold',
+    marginBottom: '2rem',
+    textShadow: '0 2px 4px rgba(0,0,0,0.2)',
   },
 
   input: {
@@ -127,7 +135,9 @@ const styles = {
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    margin: '5px',
+    margin: '10px 0',
+    width: '100%',
+    maxWidth: '400px',
     background: 'transparent',
   },
   
@@ -136,28 +146,36 @@ const styles = {
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    margin: '10px',
+    margin: '20px 0',
+    width: '100%',
+    maxWidth: '400px',
     background: 'transparent',
   },
 
   error: {
-    color: 'red',
+    color: '#ff6b6b',
     margin: '5px 0',
     fontSize: '14px',
     alignSelf: 'flex-start',
+    width: '100%',
+    padding: '5px 10px',
+    background: 'rgba(255, 255, 255, 0.9)',
+    borderRadius: '4px',
   },
 
   span: {
-    color: '#34513A',
-    margin: '20px',
-    fontFamily:'nanumsquarer'
-
+    color: '#ffffff',
+    margin: '20px 0',
+    fontFamily:'nanumsquarer',
+    fontSize: '1rem',
   },
 
   linkText: {
     cursor: 'pointer',
     textDecoration: 'underline',
-    color: '#34513A',
+    color: '#ffffff',
+    fontWeight: 'bold',
+    transition: 'opacity 0.3s',
   },
   
 };

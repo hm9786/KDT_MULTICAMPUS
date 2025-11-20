@@ -7,6 +7,7 @@ import '../../style/Modal.css';
 import Button from '../button/Button';
 import PwdInput from '../input/PwdInput';
 import axios from 'axios';
+import API_BASE_URL from '../../../utils/api';
 
 function CheckPwdModal({ show, onConfirm, onCancel, userid }) {
   const [pwd, setPwd] = useState('');
@@ -22,7 +23,7 @@ function CheckPwdModal({ show, onConfirm, onCancel, userid }) {
 
   const confirmHandler = async () => {
     try {
-      const response = await axios.post('/YOUR_BACKEND_API/check-password', 
+      const response = await axios.post(`${API_BASE_URL}/users/check-password`, 
         {
           userId: userid, // 사용자 ID를 포함
           password: pwd, // 입력된 비밀번호

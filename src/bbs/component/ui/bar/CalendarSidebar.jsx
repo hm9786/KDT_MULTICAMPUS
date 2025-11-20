@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import API_BASE_URL from '../../../utils/api';
 
 import '../../style/CalendarSidebar.css';
 
@@ -26,15 +27,19 @@ const CalendarSidebar = ({
     const [weatherInfo, setWeatherInfo] = useState({});
     const [showSidebarModal, setShowSidebarModal] = useState(false);
     const [editEventIndex, setEditEventIndex] = useState(null);
-    const apiBaseUrl = 'http://localhost:3001';
 
     useEffect(() => {
         const fetchWeatherInfo = async () => {
             try {
+                const apiKey = import.meta.env.VITE_OPENWEATHER_API_KEY;
+                if (!apiKey) {
+                    console.warn('OpenWeatherMap API 키가 설정되지 않았습니다.');
+                    return;
+                }
                 const response = await axios.get('https://api.openweathermap.org/data/2.5/weather', {
                     params: {
                         q: 'Seoul',
-                        appid: '693e8221499578232f3f9ef78bc60cbc'
+                        appid: apiKey
                     }
                 });
                 const weatherData = response.data;
@@ -67,29 +72,13 @@ const CalendarSidebar = ({
         }
         setUserEvents(updatedEvents);
         setShowSidebarModal(false);
-
-        try {
-            await axios.put(`${apiBaseUrl}/users/${userProfile.id}`, {
-                ...userProfile,
-                calendarEvents: updatedEvents,
-            });
-        } catch (error) {
-            console.error('Error saving event to JSON server:', error);
-        }
+        // TODO: Spring Boot에 이벤트 저장 API 추가 필요
     };
 
     const handleDeleteEvent = async (indexToDelete) => {
         const updatedEvents = userEvents.filter((_, index) => index !== indexToDelete);
         setUserEvents(updatedEvents);
-
-        try {
-            await axios.put(`${apiBaseUrl}/users/${userProfile.id}`, {
-                ...userProfile,
-                calendarEvents: updatedEvents,
-            });
-        } catch (error) {
-            console.error('Error deleting event from JSON server:', error);
-        }
+        // TODO: Spring Boot에 이벤트 삭제 API 추가 필요
     };
 
     const handleEditEvent = (index) => {

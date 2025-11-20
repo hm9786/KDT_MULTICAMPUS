@@ -1,6 +1,7 @@
 // 사이드바 - 회원 탈퇴 -  비밀 번호 입력 시 나타나는 모달
 import React, { useState } from 'react';
 import axios from 'axios';
+import API_BASE_URL from '../../../utils/api';
 import '../../style/Modal.css';
 import Button from '../button/Button';
 import PwdInput from '../input/PwdInput';
@@ -11,7 +12,7 @@ function ByePwdModal({ show, onConfirm, onCancel, userid }) {
   // 비밀번호 핸들러
   const pwdHandler = async () => {
     try {
-      const response = await axios.delete('YOUR_BACKEND_API/delete-account', {
+      const response = await axios.delete(`${API_BASE_URL}/users/delete-account`, {
         data: { 
           // DELETE 요청에서 데이터는 data 필드에 넣어 전송
           // 사용자 아이디와 비밀 번호만 넘기면 해당하는 데이터는 백앤드에서 삭제하도록 한다

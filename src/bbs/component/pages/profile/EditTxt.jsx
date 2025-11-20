@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import API_BASE_URL from '../../../utils/api';
 import EditInput from '../../ui/input/EditInput';
 import '../../style/Profile.css';
 
@@ -15,11 +16,11 @@ function EditTxt({ userId }) {
     console.log('edittxt User ID:', userId);
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(`/users/${userId}/profile`); // 여기
-        setNickname(response.data.nickname); 
+        const response = await axios.get(`${API_BASE_URL}/users/${userId}/profile`);
+        setNickname(response.data.nickname || ''); 
         setintroduce(response.data.introduce || '');
       } catch (error) {
-        console.error('사용자의 데이터를 가져오는 데 실패했습니다:', error); // 여기
+        console.error('사용자의 데이터를 가져오는 데 실패했습니다:', error);
       }
     };
     fetchUserData();
@@ -38,7 +39,7 @@ function EditTxt({ userId }) {
     }
 
     try {
-      await axios.put(`/users/${userId}/nickname`, { nickname });
+      await axios.put(`${API_BASE_URL}/users/${userId}/nickname`, { nickname });
       setIsEditNickname(false);
     } catch (e) {
       console.error('닉네임 저장 실패:', e);
@@ -58,7 +59,7 @@ function EditTxt({ userId }) {
 
   const saveintroduceHandler = async () => {
     try {
-      await axios.put(`/users/${userId}/introduce`, { introduce });
+      await axios.put(`${API_BASE_URL}/users/${userId}/introduce`, { introduce });
       setIsEditintroduce(false);
     } catch (e) {
       console.error('자기소개 저장 실패:', e);

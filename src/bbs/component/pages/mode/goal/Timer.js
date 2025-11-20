@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
-import { saveTotalTimeToDB } from '../goal/api'; // 시간 저장을 위한 함수 import
+import { saveTotalTimeToDB } from '../goal/api';
 
-const Timer = ({ isRunning, setIsRunning, totalTime, setTotalTime, isLoaded }) => {
+const Timer = ({ isRunning, setIsRunning, totalTime, setTotalTime, isLoaded, goalId, taskId, date }) => {
   useEffect(() => {
     let timer;
     let dailySaveTimer;
@@ -39,11 +39,11 @@ const Timer = ({ isRunning, setIsRunning, totalTime, setTotalTime, isLoaded }) =
     return () => {
       clearInterval(timer);  // 시간 증가 타이머 정리
       clearInterval(dailySaveTimer); // 자정 타이머 정리
-      if (!isRunning) {
-        saveTotalTimeToDB(totalTime); // 타이머가 멈췄을 때, 누적된 시간 저장
+      if (!isRunning && goalId && taskId) {
+        saveTotalTimeToDB(goalId, taskId, totalTime); // 타이머가 멈췄을 때, 누적된 시간 저장
       }
     };
-  }, [isRunning, totalTime, setTotalTime]); // 의존성 배열에 setTotalTime 추가
+  }, [isRunning, totalTime, setTotalTime, goalId, taskId]); // 의존성 배열에 setTotalTime 추가
 
   // 자정까지 남은 시간 계산 함수
   const getTimeUntilMidnight = () => {
@@ -63,17 +63,18 @@ const Timer = ({ isRunning, setIsRunning, totalTime, setTotalTime, isLoaded }) =
   };
 
   return (
-    <div className="goal_timer-section">
+    <div className="goal-timer-wrapper">
       <h1 className="goal_timer">⏱️</h1>
       <p className="goal_total-time">누적 시간 {formatTime(totalTime)}</p>
-      <button className="goal_button start" onClick={() => setIsRunning(true)}>start</button>
-      <button className="goal_button" onClick={async () => {
-        setIsRunning(false); // 타이머 멈춤
-        if (isLoaded) {
-          await saveTotalTimeToDB(totalTime); // DB에 시간 저장
-          // setTotalTime(0); // 화면상의 누적 시간 초기화
-        }
-      }}>stop</button>
+      <div className="goal-timer-buttons">
+        <button className="goal_button start" onClick={() => setIsRunning(true)}>start</button>
+        <button className="goal_button" onClick={async () => {
+          setIsRunning(false);
+          if (isLoaded && goalId && taskId) {
+            await saveTotalTimeToDB(goalId, taskId, totalTime);
+          }
+        }}>stop</button>
+      </div>
     </div>
   );
 };

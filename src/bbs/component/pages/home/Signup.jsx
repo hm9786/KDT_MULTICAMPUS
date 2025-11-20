@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import API_BASE_URL from "../../../utils/api";
 import HomeInput from "../../ui/input/HomeInput";
 import PwdInput from "../../ui/input/PwdInput";
 import HomeButton from "../../ui/button/HomeButton";
@@ -28,7 +29,7 @@ function Signup() {
 
   const checkUserIdExists = async (userid) => {
     try {
-      const response = await axios.post('YOUR_BACKEND_API/checkUserId', { userid });
+      const response = await axios.post(`${API_BASE_URL}/users/checkUserId`, { user_id: userid });
       return response.data.exists; // exists가 true면 아이디가 이미 사용 중인 것
     } catch (error) {
       console.error('Error checking user ID:', error);
@@ -86,22 +87,47 @@ function Signup() {
     }
 
     // 모든 필드가 유효하면 서버 요청
-    const signupData = { userid, name, nickname, pwd };
+    const signupData = { 
+      user_id: userid, 
+      user_name: name, 
+      nickname: nickname, 
+      password: pwd 
+    };
 
     try {
-      const response = await axios.post('YOUR_BACKEND_API/signup', signupData);
+      const response = await axios.post(`${API_BASE_URL}/users/signup`, signupData);
       const data = response.data;
 
       if (response.status === 200) {
-        localStorage.setItem('userId', data.userId); // userId를 localStorage에 저장
-        navigate(`/calendar/${data.userId}`); // 해당 사용자 페이지로 이동
+        // Spring Boot는 user_UN을 반환함
+        const user_UN = data.user_UN;
+        if (user_UN) {
+          localStorage.setItem('userId', user_UN.toString());
+          navigate(`/calendar/${user_UN}`);
+        } else {
+          // user_UN이 없으면 사용자 정보를 다시 조회
+          try {
+            const userResponse = await axios.get(`${API_BASE_URL}/users/userId/${userid}`);
+            if (userResponse.data && userResponse.data.user_UN) {
+              localStorage.setItem('userId', userResponse.data.user_UN.toString());
+              navigate(`/calendar/${userResponse.data.user_UN}`);
+            } else {
+              navigate('/login');
+            }
+          } catch (err) {
+            navigate('/login');
+          }
+        }
       } else {
-        alert(data.message || '회원가입에 실패했습니다.'); // 오류 메시지 처리
+        alert(data.message || '회원가입에 실패했습니다.');
       }
     } catch (error) {
       console.error('Error:', error);
-      alert('회원가입 중 오류가 발생했습니다.');
-      alert(`${name}, ${nickname}, ${userid}, ${pwd}`) // 확인용
+      if (error.response && error.response.data) {
+        alert(error.response.data);
+      } else {
+        alert('회원가입 중 오류가 발생했습니다.');
+      }
     }
   };
 
@@ -189,11 +215,16 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
     height: '100vh',
-    background: '#F1ECD9',
+    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    padding: '20px',
   },
   title:{
     fontFamily:'nanumsquarer',
-    color: '#34513A',
+    color: '#ffffff',
+    fontSize: '2.5rem',
+    fontWeight: 'bold',
+    marginBottom: '2rem',
+    textShadow: '0 2px 4px rgba(0,0,0,0.2)',
   },
   input: {
     display: 'flex',
@@ -201,7 +232,9 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
     background: 'transparent',
-    margin: '5px',
+    margin: '10px 0',
+    width: '100%',
+    maxWidth: '400px',
   },
   button: {
     display: 'flex',
@@ -209,23 +242,32 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
     background: 'transparent',
-    margin: '10px',
+    margin: '20px 0',
+    width: '100%',
+    maxWidth: '400px',
   },
   error: {
-    color: 'red', // 오류 메시지의 색상
+    color: '#ff6b6b',
     margin: '5px 0',
     fontSize: '14px',
-    alignSelf: 'flex-start', // 왼쪽 정렬
+    alignSelf: 'flex-start',
+    width: '100%',
+    padding: '5px 10px',
+    background: 'rgba(255, 255, 255, 0.9)',
+    borderRadius: '4px',
   },
   span: {
-    color: '#34513A',
-    margin: '20px',
-    fontFamily:'nanumsquarer'
+    color: '#ffffff',
+    margin: '20px 0',
+    fontFamily:'nanumsquarer',
+    fontSize: '1rem',
   },
   linkText: {
     cursor: 'pointer',
     textDecoration: 'underline',
-    color: '#34513A',
+    color: '#ffffff',
+    fontWeight: 'bold',
+    transition: 'opacity 0.3s',
   },
 };
 
