@@ -1,4 +1,4 @@
-import Button from "../../ui/button/Button";
+import CommonButton from "../../ui/button/CommonButton";
 import NewPwdInput from "../../ui/input/NewPwdInput";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -32,7 +32,8 @@ function EditPwd({ userid }) { // userId를 props로 전달받는다고 가정
 
   const backHandler =(e)=>{
     alert("비밀번호 변경이 취소됩니다.");
-    navigate('/profile')
+    const userId = parseInt(localStorage.getItem('userId') || '0');
+    navigate(`/profile/${userId}`);
   }
 
 
@@ -60,7 +61,8 @@ function EditPwd({ userid }) { // userId를 props로 전달받는다고 가정
           alert('비밀번호가 성공적으로 변경되었습니다.');
           setNewPwd(''); // 입력값 초기화
           setCheckPwd(''); // 입력값 초기화
-          navigate('/profile');
+          const userId = parseInt(localStorage.getItem('userId') || '0');
+          navigate(`/profile/${userId}`);
         } else {
           alert('비밀번호 변경 중 오류가 발생했습니다.');
         }
@@ -112,8 +114,8 @@ function EditPwd({ userid }) { // userId를 props로 전달받는다고 가정
           {/* 오러 메세지 */}
           {error && <p style={styles.error}>{error}</p>}
           <div style={styles.pwdbutton}>
-            <Button title="비밀번호 변경"
-                    onClick={submitHandler} />
+            <CommonButton title="비밀번호 변경"
+                    onClick={submitHandler} variant="success" />
           </div>
         </div>
 

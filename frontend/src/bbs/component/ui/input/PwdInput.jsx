@@ -1,36 +1,42 @@
 import React from "react";
 import styled from "styled-components";
 
-// Styled-components�??�용?�여 input ?��????�의
 const StyledInput = styled.input`
-    padding: 8px; /* ?�하좌우???�딩 추�? */
-    width: 380px; /* 버튼??고정???�비 ?�정 */
+    padding: 14px 20px;
+    width: 100%;
     font-size: 16px;
-    border: 1.5px solid #70805D;
-    border-radius: 8px;
-    margin-right: 4px; /* 버튼과의 간격 조정 */
-    background-color: #f5f5f5; /* ?�한 ?�색 배경 추�? */
+    border: 2px solid rgba(102, 126, 234, 0.2);
+    border-radius: 12px;
+    background-color: rgba(255, 255, 255, 0.98);
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    box-sizing: border-box;
+
     &:focus {
-        outline: none; /* 기본 outline ?�거 */
-        border: 2.5px solid #70805D; /* ?�커????*/    
+        outline: none;
+        border: 2px solid var(--color-primary-start);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        transform: translateY(-1px);
+        background-color: #ffffff;
     }
-    
+
     &::placeholder {
-        color: #888; /* placeholder ?�상 */
-        font-size: 14px; /* placeholder 글???�기 조정 */
+        color: #999;
+        font-size: 15px;
     }
 `;
 
 function PwdInput(props) {
-    const { value, onChange, placeholder } = props;
+    const { value, onChange, placeholder, autoComplete } = props;
     return (
         <StyledInput
             type="password"
             value={value}
             onChange={onChange}
             placeholder={placeholder}
+            autoComplete={autoComplete || "current-password"}
         />
     );
 }
 
-export default PwdInput; 
+export default PwdInput;

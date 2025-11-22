@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { FaLeaf } from 'react-icons/fa'; // 메뉴 ?�이�?추�?
+import { FaLeaf } from 'react-icons/fa'; // 메뉴 ?�이�?추�?
 import '../../style/Page.css';
 import { useNavigate } from 'react-router-dom';
 
@@ -17,17 +17,17 @@ function AppNavbar({ unreadNotifications, onNotificationClick, eventTitle, setEv
   const profileButtonRef = useRef(null);
   const profileDropdownRef = useRef(null);
 
-  // MOD ?�롭?�운 ?��? ?�수
+  // MOD ?�롭?�운 ?��? ?�수
   const toggleModDropdown = () => {
     setShowModDropdown((prev) => !prev);
   };
 
-  // Profile ?�롭?�운 ?��? ?�수
+  // Profile ?�롭?�운 ?��? ?�수
   const toggleProfileDropdown = () => {
     setShowProfileDropdown((prev) => !prev);
   };
 
-  // ?�롭?�운 ?��? ?�릭 ???�힘 처리
+  // ?�롭?�운 ?��? ?�릭 ???�힘 처리
   const handleClickOutside = (event) => {
     if (
       modDropdownRef.current &&
@@ -75,11 +75,14 @@ function AppNavbar({ unreadNotifications, onNotificationClick, eventTitle, setEv
         <span className="navbar-brand" onClick={() => navigate('/')}>
           Home
         </span>
-        <span className="nav-link" onClick={() => navigate('/profile')}>
+        <span className="nav-link" onClick={() => {
+          const userId = parseInt(localStorage.getItem('userId') || '0');
+          navigate(`/profile/${userId}`);
+        }}>
           My Page
         </span>
 
-        {/* MOD ?�롭?�운 버튼 */}
+        {/* MOD ?�롭?�운 버튼 */}
         <span
           className="nav-link"
           ref={modButtonRef}
@@ -89,7 +92,7 @@ function AppNavbar({ unreadNotifications, onNotificationClick, eventTitle, setEv
           MOD
         </span>
 
-        {/* MOD ?�롭?�운 메뉴 */}
+        {/* MOD ?�롭?�운 메뉴 */}
         {showModDropdown && (
           <div
             className="dropdown-menu"
@@ -113,7 +116,7 @@ function AppNavbar({ unreadNotifications, onNotificationClick, eventTitle, setEv
             <hr />
             <div className="nav-link" onClick={() => navigate('/goal')}>목표</div>
             <hr />
-            <div className="nav-link" onClick={() => navigate('/diary')}>?�이?�리</div>
+            <div className="nav-link" onClick={() => navigate('/diary')}>?�이?�리</div>
           </div>
         )}
       </div>
@@ -134,13 +137,13 @@ function AppNavbar({ unreadNotifications, onNotificationClick, eventTitle, setEv
           Search
         </button>
         
-        {/* ?�림 ?�이�?*/}
+        {/* ?�림 ?�이�?*/}
         <span className="nav-link" onClick={onNotificationClick} style={{ cursor: 'pointer' }}>
           <FaLeaf size={20} />
           {unreadNotifications > 0 && <span className="notification-badge">{unreadNotifications}</span>}
         </span>
 
-        {/* Profile ?�롭?�운 버튼 */}
+        {/* Profile ?�롭?�운 버튼 */}
         <span
           className="nav-link"
           ref={profileButtonRef}
@@ -154,7 +157,7 @@ function AppNavbar({ unreadNotifications, onNotificationClick, eventTitle, setEv
           />
         </span>
 
-        {/* Profile ?�롭?�운 메뉴 */}
+        {/* Profile ?�롭?�운 메뉴 */}
         {showProfileDropdown && (
           <div
             className="dropdown-menu"
@@ -174,9 +177,9 @@ function AppNavbar({ unreadNotifications, onNotificationClick, eventTitle, setEv
               zIndex: 1050,
             }}
           >
-            <div className="nav-link" onClick={() => navigate('/profile')}>?�로???�이지</div>
+            <div className="nav-link" onClick={() => navigate('/profile')}>?�로???�이지</div>
             <hr />
-            <div className="nav-link"  onClick={logoutHandler} >로그?�웃</div>
+            <div className="nav-link"  onClick={logoutHandler} >로그?�웃</div>
 
             <LogoutModal show={showLogoutModal} onConfirm={lgyesHandler} onCancel={lgnoHandler} />
 

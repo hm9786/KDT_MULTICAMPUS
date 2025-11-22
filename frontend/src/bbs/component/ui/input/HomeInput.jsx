@@ -4,19 +4,20 @@ import styled from "styled-components";
 const StyledInput = styled.input`
     padding: 14px 20px;
     width: 100%;
-    max-width: 400px;
     font-size: 16px;
-    border: 2px solid rgba(255, 255, 255, 0.3);
+    border: 2px solid rgba(102, 126, 234, 0.2);
     border-radius: 12px;
-    background-color: rgba(255, 255, 255, 0.95);
+    background-color: rgba(255, 255, 255, 0.98);
     transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    box-sizing: border-box;
 
     &:focus {
         outline: none;
-        border: 2px solid rgba(255, 255, 255, 0.8);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        transform: translateY(-2px);
+        border: 2px solid var(--color-primary-start);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        transform: translateY(-1px);
+        background-color: #ffffff;
     }
 
     &::placeholder {
@@ -26,13 +27,14 @@ const StyledInput = styled.input`
 `;
 
 function HomeInput(props) {
-    const { value, onChange, placeholder } = props;
+    const { value, onChange, placeholder, autoComplete } = props;
     return (
         <StyledInput
             type="text"
             value={value}
             onChange={onChange}
             placeholder={placeholder}
+            autoComplete={autoComplete}
         />
     );
 }

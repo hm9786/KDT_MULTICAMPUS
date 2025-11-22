@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import API_BASE_URL from '../../../../utils/api';
 import '../../style/Modal.css';
-import Button from '../button/Button';
+import CommonButton from '../button/CommonButton';
 import PwdInput from '../input/PwdInput';
 
 function ByePwdModal({ show, onConfirm, onCancel, userid }) {
@@ -37,61 +37,25 @@ function ByePwdModal({ show, onConfirm, onCancel, userid }) {
   if (!show) return null;
 
   return (
-    <div style={styles.modalOverlay}>
-      <div style={styles.modalContent}>
+    <div className="modal-overlay">
+      <div className="modal-content">
         <div className="close-icon-container">
           <span onClick={onCancel} className="close-icon">×</span>
         </div>
-        <p style={styles.title}>Password</p>
-        <p style={styles.txtLine}>탈퇴하기 위해 비밀번호가 필요합니다.</p>
+        <h3 className="modal-title">Password</h3>
+        <p className="modal-text">탈퇴하기 위해 비밀번호가 필요합니다.</p>
         <PwdInput 
           placeholder="비밀번호" 
           value={pwd} 
-          onChange={(e) => setPwd(e.target.value)} // 비밀번호 상태 업데이트
+          onChange={(e) => setPwd(e.target.value)}
         />
-        <div style={styles.buttonContainer}>
-          <Button onClick={pwdHandler} // onConfirm 대신 pwdHandler 호출
-                  title="입력"></Button>
+        <div className="modal-button-container">
+          <CommonButton onClick={pwdHandler}
+                  title="입력" variant="danger"></CommonButton>
         </div>
       </div>
     </div>
   );
 }
-
-const styles = {
-  modalOverlay: {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    zIndex:'1000'
-  },
-  modalContent: {
-    padding: '20px',
-    width: '400px',
-    borderRadius: '10px',
-    background:'white' // 모달 배경색
-  },
-  buttonContainer: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    marginTop: '20px',
-  },
-  title: {
-    fontSize: '10px',
-    fontFamily: 'montserrat',
-    fontWeight: 'bold',
-  },
-  txtLine: {
-    fontSize: '15px',
-    fontFamily: 'NanumSquareL',
-    fontWeight: 'bold',
-  }
-};
 
 export default ByePwdModal;

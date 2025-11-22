@@ -49,6 +49,9 @@ export const totalTimeFromDB = async (goalId, date) => {
 export const TasksForDate = async (goalId, date) => {
     try {
         const response = await axios.get(`${API_BASE_URL}/goals/${goalId}/tasks/date?task_date=${date}`);
+        if (!response.data || !Array.isArray(response.data)) {
+            return [];
+        }
         return response.data.map(task => ({
             id: task.task_id,
             task: task.task_name,
@@ -64,11 +67,11 @@ export const TasksForDate = async (goalId, date) => {
 export const CumulativeTime = async (goalId, month) => {
     try {
         const response = await axios.get(`${API_BASE_URL}/goals/${goalId}/total-time?month=${month}`);
-        const totalTime = response.data.totalTime || 0;
+        const totalTime = (response.data && response.data.totalTime) ? response.data.totalTime : 0;
         
         // 해당 월의 모든 작업을 가져와서 날짜별로 그룹화
         const tasksResponse = await axios.get(`${API_BASE_URL}/goals/${goalId}/tasks`);
-        const tasks = tasksResponse.data || [];
+        const tasks = (tasksResponse.data && Array.isArray(tasksResponse.data)) ? tasksResponse.data : [];
         
         const timeByDate = {};
         tasks.forEach(task => {

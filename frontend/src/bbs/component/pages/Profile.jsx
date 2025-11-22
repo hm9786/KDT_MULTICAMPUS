@@ -9,6 +9,13 @@ import '../style/Profile.css';
 function Profile({ userId = 2 }) {
     const [isOpen, setIsOpen] = useState(false);
     const [profileData, setProfileData] = useState(null);
+    
+    // userId 유효성 검사
+    const validUserId = userId && userId !== 0 ? userId : parseInt(localStorage.getItem('userId') || '0');
+    
+    if (!validUserId || validUserId === 0) {
+        console.warn('Profile: userId가 유효하지 않습니다.');
+    }
 
     const sidebarHandler = () => {
         setIsOpen(!isOpen);
@@ -37,12 +44,12 @@ function Profile({ userId = 2 }) {
                 <EditImg /> 
                 
                 <EditTxt        
-                    userId={userId}
+                    userId={validUserId}
                 />
 
                 <div className="profile-reward">
                 <Reward 
-                    userId={userId} 
+                    userId={validUserId} 
                 /> 
 
                 </div>

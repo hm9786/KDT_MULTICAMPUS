@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import '../../style/Modal.css';
  
-import Button from '../button/Button';
+import CommonButton from '../button/CommonButton';
 import PwdInput from '../input/PwdInput';
 import axios from 'axios';
 import API_BASE_URL from '../../../../utils/api';
@@ -43,66 +43,25 @@ function CheckPwdModal({ show, onConfirm, onCancel, userid }) {
   };
 
   return (
-    <div style={styles.modalOverlay}>
-      <div style={styles.modalContent}>
+    <div className="modal-overlay">
+      <div className="modal-content">
         <div className="close-icon-container">
           <span onClick={onCancel} className="close-icon">×</span>
         </div>
-        <p style={styles.title}>Password</p>
-        <p style={styles.txtLine}>비밀 번호를 입력해주세요.</p>
+        <h3 className="modal-title">Password</h3>
+        <p className="modal-text">비밀 번호를 입력해주세요.</p>
         <PwdInput 
           onChange={changeHandler}
           placeholder="비밀번호"
-          value={pwd} // 비밀번호 입력값 설정
+          value={pwd}
         />
-        {error && <p style={styles.error}>{error}</p>} {/* 오류 메시지 표시 */}
-        <div style={styles.buttonContainer}>
-          <Button onClick={confirmHandler} title="입력"></Button>
+        {error && <div className="modal-error">{error}</div>}
+        <div className="modal-button-container">
+          <CommonButton onClick={confirmHandler} title="입력" variant="primary"></CommonButton>
         </div>
       </div>
     </div>
   );
 }
-
-const styles = {
-  modalOverlay: {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    zIndex:'4'
-  },
-  modalContent: {
-    background: 'white',
-    padding: '20px',
-    width: '400px',
-    borderRadius: '10px',
-  },
-  buttonContainer: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    marginTop: '20px',
-  },
-  title: {
-    fontSize: '10px',
-    fontFamily: 'montserrat',
-    fontWeight: 'bold',
-  },
-  txtLine: {
-    fontSize: '15px',
-    fontFamily: 'NanumSquareL',
-    fontWeight: 'bold',
-  },
-  error: {
-    color: 'red',
-    fontSize: '12px',
-    marginTop: '10px',
-  }
-};
 
 export default CheckPwdModal;

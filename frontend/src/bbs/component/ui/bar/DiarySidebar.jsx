@@ -83,11 +83,11 @@
 //             <div className={`sidebar ${isOpen ? 'open' : ''}`}>
 //                 <h2 className="title">My Page</h2>
 //                 <span onClick={() => navigate('/calendar')} className="line">My calendar</span>                
-//                 <span onClick={checkpwdHandler} className="line">비�?번호 ?�정</span>
-//                 <span onClick={deleteuserHandler} className="line">?�원 ?�퇴</span>
+//                 <span onClick={checkpwdHandler} className="line">비�?번호 ?�정</span>
+//                 <span onClick={deleteuserHandler} className="line">?�원 ?�퇴</span>
 //                 <div className="flexGrow" />
 //                 <div className="center">
-//                     <span onClick={logoutHandler} className="logout">로그?�웃</span>
+//                     <span onClick={logoutHandler} className="logout">로그?�웃</span>
 //                 </div>
              
 
@@ -102,7 +102,7 @@
 //     );
 // }
 
-// export default Sidebar;// 1107 ?�전 ?�론???�일
+// export default Sidebar;// 1107 ?�전 ?�론???�일
 
 
 import React from 'react';
@@ -117,7 +117,7 @@ const DiarySidebar = ({ isOpen, sidebarHandler }) => {
     const navigate = useNavigate();
     const [showLogoutModal, setShowLogoutModal] = useState(false);
 
-    // 로그 ?�웃
+    // 로그 ?�웃
     const logoutHandler = () => {
         setShowLogoutModal(true);
     };
@@ -150,29 +150,32 @@ const DiarySidebar = ({ isOpen, sidebarHandler }) => {
             <div className={`sidebar ${isOpen ? 'open' : ''}`}>
                 <span className="sidebar-title">Diary</span>
                 <span 
-                        onClick={() => navigate('/calendar')} 
+                        onClick={() => {
+                          const userId = parseInt(localStorage.getItem('userId') || '0');
+                          navigate(`/calendar/${userId}`);
+                        }} 
                         className="line"
                 >My calendar</span>
 
                 <span 
                         onClick={()=> navigate('/staravg')} 
                         className="line"
-                >?�의 별점</span>
+                >?�의 별점</span>
 
                 <span 
                         onClick={()=> navigate('/routine')}
                         className='line'
-                >?�늘 ?�의 루틴 </span>
+                >?�늘 ?�의 루틴 </span>
                 
                 <span   
                         onClick={()=> navigate('/goal')}
                         className='line'
-                >?�늘 ?�의 목표</span>
+                >?�늘 ?�의 목표</span>
                 
                 
                 <div className="flexGrow" />
                 <div className="center">
-                    <span onClick={logoutHandler} className="logout">로그?�웃</span>
+                    <span onClick={logoutHandler} className="logout">로그?�웃</span>
                 </div>
              
 
@@ -186,4 +189,4 @@ const DiarySidebar = ({ isOpen, sidebarHandler }) => {
 
 export default DiarySidebar;
 
-//1107 front ?�일
+//1107 front ?�일

@@ -1,46 +1,51 @@
 import React from "react";
 import styled from "styled-components";
 
-// Styled-componentsÎ•??¨Ïö©?òÏó¨ input ?§Ì????ïÏùò
-// ?ÑÎ°ú??- ?âÎÑ§?? ?êÍ∏∞?åÍ∞ú Î≥ÄÍ≤?Ïπ?
 const StyledInput = styled.div`
   position: relative;
   display: inline-block;
-  width: 100%; /* ?∏Ìíã ?àÎπÑ ?§Ï†ï */
+  width: 100%;
 
   input {
-    padding-top: 10px;
-    padding-bottom: 10px;
-    padding-left: 10px;
-    width: 100%; /* ?∏Ìíã??div???ÑÏ≤¥ ?àÎπÑÎ•?Ï∞®Ï? */
-    font-size: 14px;
-    border: 1.5px solid #89892B;
-    border-radius: 8px;
-    background-color: white;
+    padding: 14px 20px;
+    width: 100%;
+    font-size: 16px;
+    border: 2px solid rgba(102, 126, 234, 0.2);
+    border-radius: 12px;
+    background-color: rgba(255, 255, 255, 0.98);
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    box-sizing: border-box;
 
     &:focus {
       outline: none;
-          border: 2.5px solid #89892B;
-
+      border: 2px solid var(--color-primary-start);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+      transform: translateY(-1px);
+      background-color: #ffffff;
     }
 
     &::placeholder {
-      color: #888;
-      font-size: 14px;
+      color: #999;
+      font-size: 15px;
     }
   }
 
   .char-counter {
     position: absolute;
-    right: 10px; /* ?§Î•∏Ï™??ùÏóê ?ÑÏπò */
-    bottom: 10px; /* ?òÎã®???ÑÏπò */
+    right: 16px;
+    bottom: 14px;
     font-size: 12px;
-    color: #888; /* Í∏Ä?????úÏãú ?âÏÉÅ */
+    color: #999;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 2px 6px;
+    border-radius: 4px;
+    pointer-events: none;
   }
 `;
 
 function EditInput(props) {
-  const { value = '', onChange, maxLength, placeholder } = props; // value??Ï¥àÍ∏∞Í∞íÏùÑ Îπ?Î¨∏Ïûê?¥Î°ú ?§Ï†ï
+  const { value = '', onChange, maxLength, placeholder } = props;
 
   return (
     <StyledInput>
@@ -51,9 +56,11 @@ function EditInput(props) {
         maxLength={maxLength}
         placeholder={placeholder}
       />
-      <div className="char-counter">
-        {value.length}/{maxLength}
-      </div>
+      {maxLength && (
+        <div className="char-counter">
+          {value.length}/{maxLength}
+        </div>
+      )}
     </StyledInput>
   );
 }

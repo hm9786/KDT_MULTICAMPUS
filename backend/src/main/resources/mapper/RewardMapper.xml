@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.test23.mappers.RewardMapper">
+
+    <select id="getRewardByUserId" parameterType="int" resultType="com.example.test23.entity.Reward">
+        SELECT user_UN, points FROM reward WHERE user_UN = #{user_UN}
+    </select>
+
+    <update id="updateRewardPoints">
+        UPDATE reward SET points = #{points} WHERE user_UN = #{user_UN}
+    </update>
+
+    <insert id="insertReward">
+        INSERT INTO reward (user_UN, points) VALUES (#{user_UN}, #{points})
+        ON DUPLICATE KEY UPDATE points = #{points}
+    </insert>
+
+</mapper>
+

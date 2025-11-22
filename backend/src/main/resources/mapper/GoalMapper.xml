@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.test23.mappers.GoalMapper">
+
+    <select id="getGoalsByUserId" parameterType="int" resultType="com.example.test23.entity.Goal">
+        SELECT * FROM goal WHERE user_UN = #{user_UN} ORDER BY target_date
+    </select>
+
+    <select id="getGoalById" parameterType="int" resultType="com.example.test23.entity.Goal">
+        SELECT * FROM goal WHERE goal_id = #{goal_id}
+    </select>
+
+    <insert id="insertGoal" parameterType="com.example.test23.entity.Goal" useGeneratedKeys="true" keyProperty="goal_id">
+        INSERT INTO goal (user_UN, title, description, target_date, color)
+        VALUES (#{user_UN}, #{title}, #{description}, #{target_date}, #{color})
+    </insert>
+
+    <update id="updateGoal" parameterType="com.example.test23.entity.Goal">
+        UPDATE goal 
+        SET title = #{title}, description = #{description}, target_date = #{target_date}, color = #{color}
+        WHERE goal_id = #{goal_id}
+    </update>
+
+    <delete id="deleteGoal" parameterType="int">
+        DELETE FROM goal WHERE goal_id = #{goal_id}
+    </delete>
+
+    <!-- Goal Tasks -->
+    <select id="getTasksByGoalId" parameterType="int" resultType="com.example.test23.entity.GoalTask">
+        SELECT * FROM goal_task WHERE goal_id = #{goal_id} ORDER BY task_date
+    </select>
+
+    <select id="getTasksByDate" resultType="com.example.test23.entity.GoalTask">
+        SELECT * FROM goal_task WHERE goal_id = #{goal_id} AND task_date = #{task_date} ORDER BY task_id
+    </select>
+
+    <select id="getTaskById" parameterType="int" resultType="com.example.test23.entity.GoalTask">
+        SELECT * FROM goal_task WHERE task_id = #{task_id}
+    </select>
+
+    <insert id="insertTask" parameterType="com.example.test23.entity.GoalTask" useGeneratedKeys="true" keyProperty="task_id">
+        INSERT INTO goal_task (goal_id, task_name, task_date, completed, total_time)
+        VALUES (#{goal_id}, #{task_name}, #{task_date}, #{completed}, #{total_time})
+    </insert>
+
+    <update id="updateTask" parameterType="com.example.test23.entity.GoalTask">
+        UPDATE goal_task 
+        SET task_name = #{task_name}, task_date = #{task_date}, completed = #{completed}, total_time = #{total_time}
+        WHERE task_id = #{task_id}
+    </update>
+
+    <delete id="deleteTask" parameterType="int">
+        DELETE FROM goal_task WHERE task_id = #{task_id}
+    </delete>
+
+    <select id="getTotalTimeByGoalAndMonth" resultType="int">
+        SELECT COALESCE(SUM(total_time), 0) FROM goal_task 
+        WHERE goal_id = #{goal_id} AND DATE_FORMAT(task_date, '%Y-%m') = #{month}
+    </select>
+
+</mapper>
+

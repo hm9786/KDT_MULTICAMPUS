@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.test23.mappers.RoutineMapper">
+
+    <select id="getRoutinesByUserId" parameterType="int" resultType="com.example.test23.entity.Routine">
+        SELECT * FROM routine WHERE user_UN = #{user_UN} AND is_active = TRUE ORDER BY time
+    </select>
+
+    <select id="getRoutineById" parameterType="int" resultType="com.example.test23.entity.Routine">
+        SELECT * FROM routine WHERE routine_id = #{routine_id}
+    </select>
+
+    <insert id="insertRoutine" parameterType="com.example.test23.entity.Routine" useGeneratedKeys="true" keyProperty="routine_id">
+        INSERT INTO routine (user_UN, title, description, time, repeat_days, repeat_type, routine_type, target_value, current_value, is_active)
+        VALUES (#{user_UN}, #{title}, #{description}, #{time}, #{repeat_days}, #{repeat_type}, #{routine_type}, #{target_value}, #{current_value}, #{is_active})
+    </insert>
+
+    <update id="updateRoutine" parameterType="com.example.test23.entity.Routine">
+        UPDATE routine 
+        SET title = #{title}, description = #{description}, time = #{time}, repeat_days = #{repeat_days},
+            repeat_type = #{repeat_type}, routine_type = #{routine_type}, target_value = #{target_value},
+            current_value = #{current_value}, is_active = #{is_active}
+        WHERE routine_id = #{routine_id}
+    </update>
+
+    <delete id="deleteRoutine" parameterType="int">
+        DELETE FROM routine WHERE routine_id = #{routine_id}
+    </delete>
+
+    <!-- Routine Log -->
+    <select id="getRoutineLogsByDate" resultType="com.example.test23.entity.RoutineLog">
+        SELECT * FROM routine_log WHERE user_UN = #{user_UN} AND log_date = #{log_date}
+    </select>
+
+    <select id="getRoutineLog" resultType="com.example.test23.entity.RoutineLog">
+        SELECT * FROM routine_log WHERE routine_id = #{routine_id} AND log_date = #{log_date}
+    </select>
+
+    <insert id="insertRoutineLog" parameterType="com.example.test23.entity.RoutineLog">
+        INSERT INTO routine_log (routine_id, user_UN, log_date, completed, value)
+        VALUES (#{routine_id}, #{user_UN}, #{log_date}, #{completed}, #{value})
+        ON DUPLICATE KEY UPDATE completed = #{completed}, value = #{value}
+    </insert>
+
+    <update id="updateRoutineLog" parameterType="com.example.test23.entity.RoutineLog">
+        UPDATE routine_log 
+        SET completed = #{completed}, value = #{value}
+        WHERE log_id = #{log_id}
+    </update>
+
+</mapper>
+

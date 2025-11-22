@@ -117,7 +117,7 @@ const CalendarSidebar = ({
 
             <div className={`sidebar ${isOpen ? 'open' : ''}`}>
                 <div className="user-info">
-                    <img src={userProfile.image || process.env.PUBLIC_URL + '/img/profile/default-img.png'} 
+                    <img src={userProfile.image || '/img/profile/default-img.png'} 
                          alt="프로필" 
                         style={{marginTop:'12vh',
                                 width:'10vh', 

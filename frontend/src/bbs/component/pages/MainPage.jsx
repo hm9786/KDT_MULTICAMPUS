@@ -67,7 +67,7 @@ function MainPage({ userId }) {
   };
 
   useEffect(() => {
-    // ?�림 권한 ?�청
+    // 알림 권한 요청
     if ('Notification' in window && Notification.permission === 'default') {
       Notification.requestPermission();
     }
@@ -82,9 +82,9 @@ function MainPage({ userId }) {
         eventStart.setHours(parseInt(hours), parseInt(minutes), 0, 0);
         
         const notificationTimes = [
-          { time: new Date(eventStart.getTime() - 30 * 60000), message: `30�???${event.title} ?�작` },
-          { time: new Date(eventStart.getTime() - 15 * 60000), message: `15�???${event.title} ?�작` },
-          { time: new Date(eventStart.getTime() - 5 * 60000), message: `5�???${event.title} ?�작` },
+          { time: new Date(eventStart.getTime() - 30 * 60000), message: `30분 전 ${event.title} 시작` },
+          { time: new Date(eventStart.getTime() - 15 * 60000), message: `15분 전 ${event.title} 시작` },
+          { time: new Date(eventStart.getTime() - 5 * 60000), message: `5분 전 ${event.title} 시작` },
         ];
 
         notificationTimes.forEach((notification) => {
@@ -92,7 +92,7 @@ function MainPage({ userId }) {
           if (delay > 0) {
             setTimeout(() => {
               if (Notification.permission === 'granted') {
-                new Notification('?�정 ?�림', {
+                new Notification('일정 알림', {
                   body: notification.message,
                   icon: '/logo192.png'
                 });
@@ -106,15 +106,20 @@ function MainPage({ userId }) {
   };
 
   useEffect(() => {
+    if (!userId || userId === 0) {
+      console.warn('userId가 유효하지 않습니다:', userId);
+      return;
+    }
+    
     const fetchUserData = async () => {
       try {
         const response = await axios.get(`${API_BASE_URL}/home?userId=${userId}`);
-        const { routineEvents, goalEvents, diaryEvents, points } = response.data;
+        const { routineEvents = [], goalEvents = [], diaryEvents = [], points = 0 } = response.data || {};
 
         const allEvents = [
-          ...routineEvents.map(event => ({ ...event, type: 'routine', color: event.color || 'green', icon: '?��' })),
-          ...goalEvents.map(event => ({ ...event, type: 'goal', color: event.color || 'blue', icon: '?��' })),
-          ...diaryEvents.map(event => ({ ...event, type: 'diary', color: event.color || 'purple', icon: '?��' }))
+          ...(routineEvents || []).map(event => ({ ...event, type: 'routine', color: event.color || 'green', icon: '📅' })),
+          ...(goalEvents || []).map(event => ({ ...event, type: 'goal', color: event.color || 'blue', icon: '🎯' })),
+          ...(diaryEvents || []).map(event => ({ ...event, type: 'diary', color: event.color || 'purple', icon: '📝' }))
         ];
 
         setUserEvents(allEvents);
@@ -122,6 +127,21 @@ function MainPage({ userId }) {
         setGrowthStage(determineGrowthStage(points || 0));
       } catch (error) {
         console.error('Error fetching user data:', error);
+        // API 호출 실패 시 빈 배열로 설정하여 에러 방지
+        setUserEvents([]);
+        setUserPoints(0);
+        setGrowthStage('seed');
+        
+        // 사용자에게 에러 알림 (필요시)
+        if (error.response) {
+          if (error.response.status === 404) {
+            console.warn('사용자 데이터를 찾을 수 없습니다.');
+          } else if (error.response.status === 500) {
+            console.error('서버 오류가 발생했습니다.');
+          }
+        } else if (error.request) {
+          console.error('백엔드 서버에 연결할 수 없습니다. 백엔드가 실행 중인지 확인해주세요.');
+        }
       }
     };
 
@@ -129,7 +149,7 @@ function MainPage({ userId }) {
       try {
         const apiKey = import.meta.env.VITE_PUBLIC_DATA_API_KEY;
         if (!apiKey || apiKey === 'YOUR_API_KEY') {
-          console.warn('공공?�이?�포??API ?��? ?�정?��? ?�았?�니?? 공휴???�보�?불러?????�습?�다.');
+          console.warn('공공데이터포털 API 키를 설정하지 않았습니다. 공휴일 정보를 불러올 수 없습니다.');
           return;
         }
         const response = await fetch(
@@ -178,18 +198,32 @@ function MainPage({ userId }) {
         color: newEvent.color || '#667eea'
       };
       const response = await axios.post(`${API_BASE_URL}/schedules`, scheduleData);
-      const addedEvent = {
-        id: response.data.schedule_id,
-        title: response.data.title,
-        start: response.data.start_date,
-        end: response.data.end_date,
-        color: response.data.color,
-        mode: response.data.mode
-      };
-      setUserEvents([...userEvents, addedEvent]);
-      updateUserPoints(10);
+      if (response.data) {
+        const addedEvent = {
+          id: response.data.schedule_id,
+          title: response.data.title,
+          start: response.data.start_date,
+          end: response.data.end_date,
+          color: response.data.color || '#667eea',
+          mode: response.data.mode || 'default'
+        };
+        setUserEvents([...userEvents, addedEvent]);
+        updateUserPoints(10);
+      } else {
+        console.error('이벤트 추가 응답 데이터가 없습니다.');
+        alert('이벤트 추가에 실패했습니다.');
+      }
     } catch (error) {
       console.error('Error adding event:', error);
+      if (error.response) {
+        if (error.response.status === 404) {
+          alert('서버를 찾을 수 없습니다. 백엔드가 실행 중인지 확인해주세요.');
+        } else {
+          alert('이벤트 추가 중 오류가 발생했습니다.');
+        }
+      } else {
+        alert('백엔드 서버에 연결할 수 없습니다.');
+      }
     }
   };
 
@@ -210,11 +244,22 @@ function MainPage({ userId }) {
         mode: updatedEvent.mode || 'default',
         color: updatedEvent.color || '#667eea'
       };
-      await axios.put(`${API_BASE_URL}/schedules/${updatedEvent.id}`, scheduleData);
-      setUserEvents(userEvents.map(event => (event.id === updatedEvent.id ? updatedEvent : event)));
-      updateUserPoints(5);
+      const response = await axios.put(`${API_BASE_URL}/schedules/${updatedEvent.id}`, scheduleData);
+      if (response.status === 200) {
+        setUserEvents(userEvents.map(event => (event.id === updatedEvent.id ? updatedEvent : event)));
+        updateUserPoints(5);
+      }
     } catch (error) {
       console.error('Error updating event:', error);
+      if (error.response) {
+        if (error.response.status === 404) {
+          alert('서버를 찾을 수 없습니다. 백엔드가 실행 중인지 확인해주세요.');
+        } else {
+          alert('이벤트 수정 중 오류가 발생했습니다.');
+        }
+      } else {
+        alert('백엔드 서버에 연결할 수 없습니다.');
+      }
     }
   };
 

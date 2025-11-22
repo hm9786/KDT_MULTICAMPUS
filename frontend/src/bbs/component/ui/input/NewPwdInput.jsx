@@ -1,23 +1,28 @@
 import React from "react";
 import styled from "styled-components";
 
-// Styled-componentsë¥??¬ìš©?˜ì—¬ input ?¤í????•ì˜
 const StyledInput = styled.input`
-    padding: 8px; /* ?í•˜ì¢Œìš°???¨ë”© ì¶”ê? */
-    width: 100%; /* ë²„íŠ¼??ê³ ì •???ˆë¹„ ?¤ì • */
+    padding: 14px 20px;
+    width: 100%;
     font-size: 16px;
-    border: 1.5px solid #89892B;
-    border-radius: 8px;
-    margin-right: 4px; /* ë²„íŠ¼ê³¼ì˜ ê°„ê²© ì¡°ì • */
-    background-color: #f5f5f5; /* ?°í•œ ?Œìƒ‰ ë°°ê²½ ì¶”ê? */
+    border: 2px solid rgba(102, 126, 234, 0.2);
+    border-radius: 12px;
+    background-color: rgba(255, 255, 255, 0.98);
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    box-sizing: border-box;
+
     &:focus {
-        outline:none;
-        border: 2.5px solid #89892B; /* ?¬ì»¤?????Œë‘ë¦???ë³€ê²?*/
+        outline: none;
+        border: 2px solid var(--color-primary-start);
+        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        transform: translateY(-1px);
+        background-color: #ffffff;
     }
-    
+
     &::placeholder {
-        color: #888; /* placeholder ?‰ìƒ */
-        font-size: 14px; /* placeholder ê¸€???¬ê¸° ì¡°ì • */
+        color: #999;
+        font-size: 15px;
     }
 `;
 
@@ -33,4 +38,4 @@ function NewPwdInput(props) {
     );
 }
 
-export default NewPwdInput; 
+export default NewPwdInput;

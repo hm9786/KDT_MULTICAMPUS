@@ -82,12 +82,15 @@ const Sidebar = ({ isOpen, sidebarHandler }) => {
 
             <div className={`sidebar ${isOpen ? 'open' : ''}`}>
                 <h2 className="title">My Page</h2>
-                <span onClick={() => navigate('/calendar')} className="line">My calendar</span>                
-                <span onClick={checkpwdHandler} className="line">비�?번호 ?�정</span>
-                <span onClick={deleteuserHandler} className="line">?�원 ?�퇴</span>
+                <span onClick={() => {
+                  const userId = parseInt(localStorage.getItem('userId') || '0');
+                  navigate(`/calendar/${userId}`);
+                }} className="line">My calendar</span>                
+                <span onClick={checkpwdHandler} className="line">비�?번호 ?�정</span>
+                <span onClick={deleteuserHandler} className="line">?�원 ?�퇴</span>
                 <div className="flexGrow" />
                 <div className="center">
-                    <span onClick={logoutHandler} className="logout">로그?�웃</span>
+                    <span onClick={logoutHandler} className="logout">로그?�웃</span>
                 </div>
              
 

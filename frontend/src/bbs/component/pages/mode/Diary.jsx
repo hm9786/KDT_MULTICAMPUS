@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import AppNavbar from "../../ui/bar/AppNavbar";
 import DiarySidebar from "../../ui/bar/DiarySidebar";
 import StarRating from "../../ui/StarRating";
@@ -8,8 +9,16 @@ import "../../style/Diary.css";
 import "../../style/Page.css";
 
 function Diary() {
+    const navigate = useNavigate();
     const [isOpen, setIsOpen] = useState(false);
     const userId = parseInt(localStorage.getItem('userId') || '0');
+    
+    // userId 유효성 검사
+    useEffect(() => {
+        if (!userId || userId === 0) {
+            navigate('/login');
+        }
+    }, [userId, navigate]);
     
     const [diaryDate, setDiaryDate] = useState(new Date().toISOString().split('T')[0]);
     const [weather, setWeather] = useState('');

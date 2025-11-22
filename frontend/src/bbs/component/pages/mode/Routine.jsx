@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import API_BASE_URL from '../../../../utils/api';
 
@@ -11,12 +12,19 @@ import RoutineSidebar from '../../ui/bar/RoutineSidebar';
 
 import '../../style/Routine.css';
 import AppNavbar from '../../ui/bar/AppNavbar';
-import HomeButton from '../../ui/button/HomeButton';
+import CommonButton from '../../ui/button/CommonButton';
 
 function Routine() {
-
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const userId = parseInt(localStorage.getItem('userId') || '0');
+  
+  // userId 유효성 검사
+  useEffect(() => {
+    if (!userId || userId === 0) {
+      navigate('/login');
+    }
+  }, [userId, navigate]);
 
   const [routines, setRoutines] = useState([]);
   const [popupVisible, setPopupVisible] = useState(false);
@@ -33,15 +41,27 @@ function Routine() {
 
   // 루틴 데이터를 가져오는 함수
   useEffect(() => {
+    if (!userId || userId === 0) {
+      console.warn('userId가 유효하지 않습니다.');
+      return;
+    }
+    
     const fetchRoutines = async () => {
       try {
         const response = await axios.get(`${API_BASE_URL}/routines/user/${userId}`);
         // 오늘 날짜의 루틴만 필터링
         const today = new Date().toISOString().split('T')[0];
-        const todayRoutines = response.data.filter(routine => routine.routine_date === today);
+        const routinesData = response.data || [];
+        const todayRoutines = routinesData.filter(routine => routine.routine_date === today);
         setRoutines(todayRoutines);
       } catch (error) {
         console.error('루틴 데이터를 가져오는 중 오류 발생:', error);
+        setRoutines([]); // 에러 발생 시 빈 배열로 설정
+        if (error.response && error.response.status === 404) {
+          console.warn('루틴 데이터를 찾을 수 없습니다.');
+        } else if (!error.response) {
+          console.error('백엔드 서버에 연결할 수 없습니다.');
+        }
       }
     };
     fetchRoutines();
@@ -198,9 +218,10 @@ function Routine() {
                     toggleComplete={toggleComplete} 
                     handleButtonClick={handleButtonClick} 
         />
-        <HomeButton className="add-button" 
+        <CommonButton className="add-button" 
                 onClick={handleAddRoutine}
                 title="add routine"
+                variant="primary"
         />
 
         <RoutineStats userId={userId} />

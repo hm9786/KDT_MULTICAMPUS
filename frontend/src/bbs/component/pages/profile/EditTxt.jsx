@@ -94,13 +94,13 @@ function EditTxt({ userId }) {
           {isEditNickname ? (
             <div className="edit-txt-button-container">
               <img
-                src={process.env.PUBLIC_URL + '/img/button/check.png'}
+                src="/img/button/check.png"
                 alt="저장"
                 className="edit-txt-save-button"
                 onClick={saveNicknameHandler}
               />
               <img
-                src={process.env.PUBLIC_URL + '/img/button/cross.png'}                
+                src="/img/button/cross.png"                
                 alt="취소"
                 className="edit-txt-cancel-button"
                 onClick={cancelNicknameHandler}
@@ -109,7 +109,7 @@ function EditTxt({ userId }) {
           ) : (
             <div>
               <img
-                src={process.env.PUBLIC_URL + '/img/button/edit.png'}
+                src="/img/button/edit.png"
                 alt="편집"
                 className="edit-txt-edit-button"
                 onClick={editNicknameHandler}
@@ -139,13 +139,13 @@ function EditTxt({ userId }) {
           {isEditintroduce ? (
             <div className="edit-txt-button-container">
               <img
-                src={process.env.PUBLIC_URL + '/img/button/check.png'}
+                src="/img/button/check.png"
                 alt="저장"
                 className="edit-txt-save-button"
                 onClick={saveintroduceHandler}
               />
               <img
-                src={process.env.PUBLIC_URL + '/img/button/cross.png'}
+                src="/img/button/cross.png"
                 alt="취소"
                 className="edit-txt-cancel-button"
                 onClick={cancelintroduceHandler}
@@ -154,7 +154,7 @@ function EditTxt({ userId }) {
           ) : (
             <div>
               <img
-                src={process.env.PUBLIC_URL + '/img/button/edit.png'}
+                src="/img/button/edit.png"
                 alt="편집"
                 className="edit-txt-edit-button"
                 onClick={editintroduceHandler}

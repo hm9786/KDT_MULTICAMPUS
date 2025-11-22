@@ -27,22 +27,22 @@ function Reward({ userId }) {
 
   useEffect(() => {
     if (point >= 3000) {
-      setImgSrc(process.env.PUBLIC_URL + '/img/reward/growing-fruit.png');
+      setImgSrc('/img/reward/growing-fruit.png');
       setLevel("열매");
     } else if (point >= 1950) {
-      setImgSrc(process.env.PUBLIC_URL + '/img/reward/growing-flower.png');
+      setImgSrc('/img/reward/growing-flower.png');
       setLevel("꽃");
     } else if (point >= 1050) {
-      setImgSrc(process.env.PUBLIC_URL + '/img/reward/growing-tree.png');
+      setImgSrc('/img/reward/growing-tree.png');
       setLevel("나무");
     } else if (point >= 450) {
-      setImgSrc(process.env.PUBLIC_URL + '/img/reward/growing-sapling.png');
+      setImgSrc('/img/reward/growing-sapling.png');
       setLevel("묘목");
     } else if (point >= 150) {
-      setImgSrc(process.env.PUBLIC_URL + '/img/reward/growing-sprout.png');
+      setImgSrc('/img/reward/growing-sprout.png');
       setLevel("새싹");
     } else {
-      setImgSrc(process.env.PUBLIC_URL + '/img/reward/growing-seed.png');
+      setImgSrc('/img/reward/growing-seed.png');
       setLevel("씨앗");
     }
   }, [point]);

@@ -1,18 +1,31 @@
 {
-    "sqltools.connections": [
-        {
-            "mysqlOptions": {
-                "authProtocol": "default",
-                "enableSsl": "Disabled"
-            },
-            "previewLimit": 50,
-            "server": "db-pdule-kr.vpc-pub-cdb.ntruss.com",
-            "port": 3306,
-            "driver": "MySQL",
-            "username": "fullstack-ch",
-            "name": "Fullstack03",
-            "database": "fullstack-3"
-
-        }
-    ]
+  // Java Language Server 메모리 설정 증가
+  "java.jdt.ls.java.home": "",
+  "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx2G -Xms256m",
+  
+  // Gradle 설정
+  "java.configuration.runtimes": [],
+  
+  // 컴파일러 설정
+  "java.compile.nullAnalysis.mode": "automatic",
+  
+  // 불필요한 기능 비활성화 (메모리 절약)
+  "java.import.gradle.enabled": true,
+  "java.import.maven.enabled": false,
+  "java.autobuild.enabled": true,
+  
+  // 인덱싱 제한
+  "files.exclude": {
+    "**/.gradle": true,
+    "**/build": true,
+    "**/.classpath": true,
+    "**/.project": true,
+    "**/.settings": true,
+    "**/.factorypath": true,
+    "**/node_modules": true
+  },
+  
+  // Java 파일 검색 제한
+  "java.maxConcurrentBuilds": 1,
+  "java.import.gradle.wrapper.enabled": true
 }

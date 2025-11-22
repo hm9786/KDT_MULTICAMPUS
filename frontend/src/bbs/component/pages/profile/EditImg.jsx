@@ -7,7 +7,7 @@ import '../../style/Profile.css';
 
 function EditImg() {
 
-    const defaultImg = process.env.PUBLIC_URL + '/img/profile/default-img.png';
+    const defaultImg = '/img/profile/default-img.png';
     const userId = parseInt(localStorage.getItem('userId') || '0');
 
     const [profileImgUrl, setProfileImgUrl] = useState(defaultImg);
@@ -77,7 +77,7 @@ function EditImg() {
             <div className="edit-img-img-container">
                 <img src={profileImgUrl} className="edit-img-img" alt="Profile" />
                 <img 
-                    src={process.env.PUBLIC_URL + '/img/button/img-edit.png'}
+                    src="/img/button/img-edit.png"
                     alt="Upload" 
                     className="edit-img-upload-button" 
                     onClick={showModalHandler} 

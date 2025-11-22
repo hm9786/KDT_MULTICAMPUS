@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import API_BASE_URL from '../../../../utils/api';
 import '../../style/Goal.css';
 import '../../style/GoalCalendar.css';
@@ -23,7 +24,15 @@ import {
 } from './goal/api.js';
 
 const Goal = () => {
+  const navigate = useNavigate();
   const userId = parseInt(localStorage.getItem('userId') || '0');
+  
+  // userId 유효성 검사
+  useEffect(() => {
+    if (!userId || userId === 0) {
+      navigate('/login');
+    }
+  }, [userId, navigate]);
   const [goalId, setGoalId] = useState(null);
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState('');
@@ -48,13 +57,25 @@ const Goal = () => {
 
   //목표 데이터를 가져옴
   useEffect(() => {
+    if (!userId || userId === 0) {
+      console.warn('userId가 유효하지 않습니다.');
+      return;
+    }
+    
     const loadGoalData = async () => {
-      if (!userId) return;
-
-      const data = await GoalData(userId);
-      setGoalId(data.goalId);
-      setGoalTitle(data.goalTitle);
-      setTargetDate(data.targetDate ? new Date(data.targetDate) : null);
+      try {
+        const data = await GoalData(userId);
+        if (data) {
+          setGoalId(data.goalId || null);
+          setGoalTitle(data.goalTitle || '');
+          setTargetDate(data.targetDate ? new Date(data.targetDate) : null);
+        }
+      } catch (error) {
+        console.error('목표 데이터를 가져오는 중 오류 발생:', error);
+        setGoalId(null);
+        setGoalTitle('');
+        setTargetDate(null);
+      }
     };
 
     loadGoalData();
@@ -62,17 +83,29 @@ const Goal = () => {
 
   // 목표가 설정되어 있을 때만 작업 데이터 로드
   useEffect(() => {
-    const loadTasks = async () => {
-      if (!goalId) return;
-
-      const today = date.toISOString().split('T')[0];
-      const tasksData = await TasksForDate(goalId, today);
-      setTasks(tasksData);
-
-      // 오늘의 총 시간 가져오기
-      const todayTotalTime = await totalTimeFromDB(goalId, today);
-      setTotalTime(todayTotalTime);
+    if (!goalId) {
+      setTasks([]);
+      setTotalTime(0);
       setIsLoaded(true);
+      return;
+    }
+    
+    const loadTasks = async () => {
+      try {
+        const today = date.toISOString().split('T')[0];
+        const tasksData = await TasksForDate(goalId, today);
+        setTasks(Array.isArray(tasksData) ? tasksData : []);
+
+        // 오늘의 총 시간 가져오기
+        const todayTotalTime = await totalTimeFromDB(goalId, today);
+        setTotalTime(todayTotalTime || 0);
+        setIsLoaded(true);
+      } catch (error) {
+        console.error('작업 데이터를 가져오는 중 오류 발생:', error);
+        setTasks([]);
+        setTotalTime(0);
+        setIsLoaded(true);
+      }
     };
 
     loadTasks();

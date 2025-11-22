@@ -1,6 +1,6 @@
 import React from 'react';
 import '../../style/Modal.css';
-import HomeButton from '../button/HomeButton';
+import CommonButton from '../button/CommonButton';
 
 function EditImgModal({ show, onDelete, onEdit, onCancel }) {
   if (!show) return null;
@@ -12,10 +12,10 @@ function EditImgModal({ show, onDelete, onEdit, onCancel }) {
           <span onClick={onCancel} className="edit-img-modal-close-icon">×</span>
         </div>
         <div className="edit-img-modal-button-container">
-          <HomeButton onClick={onEdit} title="?��?지 ?�정?�기" />
+          <CommonButton onClick={onEdit} title="이미지 수정하기" variant="primary" />
         </div>
         <div className="edit-img-modal-button-container">
-          <HomeButton onClick={onDelete} title="?��?지 ??��?�기" />
+          <CommonButton onClick={onDelete} title="이미지 삭제하기" variant="danger" />
         </div>
       </div>
     </div>

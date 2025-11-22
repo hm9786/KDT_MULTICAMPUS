@@ -19,6 +19,28 @@
     }
 }
 
+/* CSS 변수 - 색상 팔레트 */
+:root {
+    --color-primary-start: #667eea;
+    --color-primary-end: #764ba2;
+    --color-primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    
+    --color-bg-start: #f5f7fa;
+    --color-bg-end: #c3cfe2;
+    --color-bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    
+    --color-success: #40c057;
+    --color-danger: #ee5a6f;
+    
+    --border-radius-sm: 12px;
+    --border-radius-md: 20px;
+    --border-radius-lg: 24px;
+    
+    --shadow-sm: 0 4px 15px rgba(102, 126, 234, 0.3);
+    --shadow-md: 0 6px 20px rgba(102, 126, 234, 0.4);
+    --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.1);
+}
+
 /* font */
 @font-face {
     font-family: "montserrat";

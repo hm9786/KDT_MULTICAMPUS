@@ -4,7 +4,8 @@ import axios from "axios";
 import API_BASE_URL from "../../../../utils/api";
 import HomeInput from "../../ui/input/HomeInput";
 import PwdInput from "../../ui/input/PwdInput";
-import HomeButton from "../../ui/button/HomeButton";
+import CommonButton from "../../ui/button/CommonButton";
+import "../../style/Auth.css";
 
 function Login() {
   const navigate = useNavigate();
@@ -57,127 +58,53 @@ function Login() {
   };
 
   return (
-    <div name="container" style={styles.container}>
-      <div name="title">
-        <h2 style={styles.title}>Login</h2>
-      </div>
+    <div className="auth-container">
+      <div className="auth-card">
+        <h2 className="auth-title">Login</h2>
 
-      <div name="input" style={styles.input}>
-        <HomeInput
-          placeholder="ID"
-          value={userid} // 상태 연결
-          onChange={     // 상태 업데이트 핸들러
-            (e) => setUserId(e.target.value)
-          } 
-        />
-        {useridError && ( // 아이디 오류 메시지가 있을 경우만 표시
-          <div style={styles.error}>
-            {useridError}
+        <form onSubmit={loginHandler}>
+          <div className="auth-input-group">
+            <HomeInput
+              placeholder="ID"
+              value={userid}
+              onChange={(e) => setUserId(e.target.value)}
+              autoComplete="username"
+            />
+            {useridError && (
+              <div className="auth-error">
+                {useridError}
+              </div>
+            )}
           </div>
-        )}
-      </div>
 
-      <div name="input" style={styles.input}>
-        <PwdInput
-          placeholder="PASSWORD"
-          value={pwd} // 상태 연결
-          onChange={  // 상태 업데이트 핸들러
-            (e) => setPwd(e.target.value)
-          } 
-        />
-        {pwdError && ( // 비밀번호 오류 메시지가 있을 경우만 표시
-          <div style={styles.error}>
-            {pwdError}
+          <div className="auth-input-group">
+            <PwdInput
+              placeholder="PASSWORD"
+              value={pwd}
+              onChange={(e) => setPwd(e.target.value)}
+              autoComplete="current-password"
+            />
+            {pwdError && (
+              <div className="auth-error">
+                {pwdError}
+              </div>
+            )}
           </div>
-        )}
-      </div>
 
-      <div name="button" style={styles.button}>
-        {/* loginHandler 연결 */}
-        <HomeButton title="로그인"
-                    onClick={loginHandler} />
-      </div>
+          <div className="auth-button-group">
+            <CommonButton type="submit" title="로그인" fullWidth={true} />
+          </div>
+        </form>
 
-      <div name="span" style={styles.span}>
-        회원가입이 필요하신가요? &nbsp; {' | '} &nbsp;
-        <span onClick={() => navigate('/signup')}
-              style={styles.linkText}>
-              회원가입
-        </span>
+        <div className="auth-footer">
+          회원가입이 필요하신가요? &nbsp; {' | '} &nbsp;
+          <span className="auth-link" onClick={() => navigate('/signup')}>
+            회원가입
+          </span>
+        </div>
       </div>
     </div>
   );
 }
-
-const styles = {
-
-  container: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '100vh',
-    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-    padding: '20px',
-  },
-
-  title:{
-    fontFamily:'montserrat',
-    color: '#ffffff',
-    fontSize: '2.5rem',
-    fontWeight: 'bold',
-    marginBottom: '2rem',
-    textShadow: '0 2px 4px rgba(0,0,0,0.2)',
-  },
-
-  input: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    margin: '10px 0',
-    width: '100%',
-    maxWidth: '400px',
-    background: 'transparent',
-  },
-  
-  button: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    margin: '20px 0',
-    width: '100%',
-    maxWidth: '400px',
-    background: 'transparent',
-  },
-
-  error: {
-    color: '#ff6b6b',
-    margin: '5px 0',
-    fontSize: '14px',
-    alignSelf: 'flex-start',
-    width: '100%',
-    padding: '5px 10px',
-    background: 'rgba(255, 255, 255, 0.9)',
-    borderRadius: '4px',
-  },
-
-  span: {
-    color: '#ffffff',
-    margin: '20px 0',
-    fontFamily:'nanumsquarer',
-    fontSize: '1rem',
-  },
-
-  linkText: {
-    cursor: 'pointer',
-    textDecoration: 'underline',
-    color: '#ffffff',
-    fontWeight: 'bold',
-    transition: 'opacity 0.3s',
-  },
-  
-};
 
 export default Login;

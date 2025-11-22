@@ -16,38 +16,36 @@ function Calendar({ userEvents = [], holidays = [], onDateClick, onSelect, onEve
       color: event.type === 'routine' ? 'green' :
              event.type === 'goal' ? 'blue' :
              event.type === 'diary' ? 'purple' : 'gray',
-      icon: event.type === 'routine' ? '?“…' :
-            event.type === 'goal' ? '?¯' :
-            event.type === 'diary' ? '?“–' : '?“'
+      icon: event.type === 'routine' ? 'ğŸ“…' :
+            event.type === 'goal' ? 'ğŸ¯' :
+            event.type === 'diary' ? 'ğŸ“' : 'ğŸ“Œ'
     }))
   ];
 
   return (
     <div className="calendar">
-      {combinedEvents.length > 0 ? (
-        <FullCalendar
-          plugins={[dayGridPlugin, interactionPlugin]}
-          initialView="dayGridMonth"
-          events={combinedEvents}
-          dateClick={onDateClick}
-          selectable={true}
-          selectMirror={true}
-          select={onSelect}
-          displayEventTime={userEvents.some((event) => event.start?.includes('T'))}
-          height="auto"
-          eventContent={(eventInfo) => (
-            <div>
-              <span>{eventInfo.event.extendedProps.icon}</span> {eventInfo.event.title}
-            </div>
-          )}
-          eventClick={(info) => {
-            info.jsEvent.preventDefault();
+      <FullCalendar
+        plugins={[dayGridPlugin, interactionPlugin]}
+        initialView="dayGridMonth"
+        events={combinedEvents}
+        dateClick={onDateClick}
+        selectable={true}
+        selectMirror={true}
+        select={onSelect}
+        displayEventTime={userEvents.some((event) => event.start?.includes('T'))}
+        height="auto"
+        eventContent={(eventInfo) => (
+          <div>
+            <span>{eventInfo.event.extendedProps.icon}</span> {eventInfo.event.title}
+          </div>
+        )}
+        eventClick={(info) => {
+          info.jsEvent.preventDefault();
+          if (onEventClick) {
             onEventClick(info.event);
-          }}
-        />
-      ) : (
-        <p>Loading events...</p>
-      )}
+          }
+        }}
+      />
     </div>
   );
 }

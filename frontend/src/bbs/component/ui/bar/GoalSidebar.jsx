@@ -10,7 +10,7 @@ const GoalSidebar = ({ isOpen, sidebarHandler }) => {
     const navigate = useNavigate();
     const [showLogoutModal, setShowLogoutModal] = useState(false);
 
-    // 로그 ?�웃
+    // 로그 ?�웃
     const logoutHandler = () => {
         setShowLogoutModal(true);
     };
@@ -43,25 +43,28 @@ const GoalSidebar = ({ isOpen, sidebarHandler }) => {
             <div className={`sidebar ${isOpen ? 'open' : ''}`}>
                 <span className="sidebar-title">Goal</span>
                 <span 
-                        onClick={() => navigate('/calendar')} 
+                        onClick={() => {
+                          const userId = parseInt(localStorage.getItem('userId') || '0');
+                          navigate(`/calendar/${userId}`);
+                        }} 
                         className="line"
                 >My calendar</span>
                 
                 <span   
                         onClick={()=> navigate('/routine')}
                         className='line'
-                >?�늘 ?�의 루틴</span>
+                >?�늘 ?�의 루틴</span>
 
                 
                 <span 
                         onClick={()=> navigate('/diary')}
                         className='line'
-                >?�늘 ?�의 ?�기</span>
+                >?�늘 ?�의 ?�기</span>
                 
                 
                 <div className="flexGrow" />
                 <div className="center">
-                    <span onClick={logoutHandler} className="logout">로그?�웃</span>
+                    <span onClick={logoutHandler} className="logout">로그?�웃</span>
                 </div>
              
 
