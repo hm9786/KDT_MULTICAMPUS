@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.test23.mappers.DiaryMapper">
+
+    <select id="getDiariesByUserId" parameterType="int" resultType="com.example.test23.entity.Diary">
+        SELECT * FROM diary WHERE user_UN = #{user_UN} ORDER BY diary_date DESC
+    </select>
+
+    <select id="getDiaryByDate" resultType="com.example.test23.entity.Diary">
+        SELECT * FROM diary WHERE user_UN = #{user_UN} AND diary_date = #{diary_date}
+    </select>
+
+    <select id="getDiaryById" parameterType="int" resultType="com.example.test23.entity.Diary">
+        SELECT * FROM diary WHERE diary_id = #{diary_id}
+    </select>
+
+    <insert id="insertDiary" parameterType="com.example.test23.entity.Diary" useGeneratedKeys="true" keyProperty="diary_id">
+        INSERT INTO diary (user_UN, diary_date, weather, temperature, today_goal, content, star_rating, image_url)
+        VALUES (#{user_UN}, #{diary_date}, #{weather}, #{temperature}, #{today_goal}, #{content}, #{star_rating}, #{image_url})
+        ON DUPLICATE KEY UPDATE 
+            weather = #{weather}, temperature = #{temperature}, today_goal = #{today_goal}, 
+            content = #{content}, star_rating = #{star_rating}, image_url = #{image_url}
+    </insert>
+
+    <update id="updateDiary" parameterType="com.example.test23.entity.Diary">
+        UPDATE diary 
+        SET weather = #{weather}, temperature = #{temperature}, today_goal = #{today_goal},
+            content = #{content}, star_rating = #{star_rating}, image_url = #{image_url}
+        WHERE diary_id = #{diary_id}
+    </update>
+
+    <delete id="deleteDiary" parameterType="int">
+        DELETE FROM diary WHERE diary_id = #{diary_id}
+    </delete>
+
+    <select id="getAverageRatingByWeek" resultType="double">
+        SELECT COALESCE(AVG(star_rating), 0) FROM diary 
+        WHERE user_UN = #{user_UN} AND diary_date BETWEEN #{startDate} AND #{endDate}
+    </select>
+
+</mapper>
+

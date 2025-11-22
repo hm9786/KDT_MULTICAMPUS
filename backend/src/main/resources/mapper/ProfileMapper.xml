@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.test23.mappers.ProfileMapper">
+
+    <select id="getProfileByUserId" parameterType="int" resultType="com.example.test23.entity.Profile">
+        SELECT user_UN, nickname, introduce, profile_picture as profilePicture
+        FROM profile WHERE user_UN = #{user_UN}
+    </select>
+
+    <update id="updateNickname">
+        UPDATE profile SET nickname = #{nickname} WHERE user_UN = #{user_UN}
+    </update>
+
+    <update id="updateIntroduce">
+        UPDATE profile SET introduce = #{introduce} WHERE user_UN = #{user_UN}
+    </update>
+
+    <update id="updateProfilePicture">
+        UPDATE profile SET profile_picture = #{profilePicture} WHERE user_UN = #{user_UN}
+    </update>
+
+    <insert id="insertProfile">
+        INSERT INTO profile (user_UN, nickname, introduce) 
+        VALUES (#{user_UN}, '', '')
+        ON DUPLICATE KEY UPDATE user_UN = #{user_UN}
+    </insert>
+
+</mapper>
+

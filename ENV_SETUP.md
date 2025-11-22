@@ -2,106 +2,156 @@
 
 ## 📋 개요
 
-프로젝트에서 사용하는 외부 API 키를 환경 변수로 관리합니다.
+프로젝트 루트에 하나의 `.env` 파일로 백엔드와 프론트엔드의 환경 변수를 통합 관리합니다.
 
-## 🔑 필요한 API 키
+## 📁 .env 파일 생성
 
-### 1. OpenWeatherMap API 키 (필수)
-- **용도**: 날씨 정보 조회
-- **발급 사이트**: https://openweathermap.org/api
-- **무료 플랜**: 일일 1,000회 호출 가능
+프로젝트 최상위 디렉토리(`KDT_MULTICAMPUS/`)에 `.env` 파일을 생성하고 다음 내용을 입력하세요:
 
-### 2. 공공데이터포털 API 키 (선택)
-- **용도**: 공휴일 정보 조회
-- **발급 사이트**: https://www.data.go.kr
-- **선택사항**: 공휴일 기능을 사용하지 않으면 설정 불필요
-
-## 🚀 설정 방법
-
-### 1. `.env.example` 파일을 `.env`로 복사
-
-프로젝트 루트에 이미 `.env.example` 파일이 있습니다. 이 파일을 복사하여 `.env` 파일을 만드세요.
-
-**Windows:**
 ```bash
-copy .env.example .env
+# ============================================
+# 백엔드 (Spring Boot) 설정
+# ============================================
+DB_HOST=localhost
+DB_PORT=3306
+DB_NAME=fullstack-3
+DB_USERNAME=root
+DB_PASSWORD=your_password_here
+SERVER_PORT=8081
+
+# ============================================
+# 프론트엔드 (Vite/React) 설정
+# ============================================
+VITE_API_URL=http://localhost:8081
+VITE_OPENWEATHER_API_KEY=your_openweather_api_key_here
+VITE_PUBLIC_DATA_API_KEY=your_public_data_api_key_here
 ```
 
-**Mac/Linux:**
+## 🔧 설정 방법
+
+### 방법 1: 수동 생성
+
+1. 프로젝트 루트 디렉토리로 이동
+2. `.env` 파일 생성
+3. 위의 내용을 복사하여 붙여넣기
+4. 실제 값으로 변경 (특히 `DB_PASSWORD`, API 키들)
+
+**Windows PowerShell:**
+```powershell
+cd C:\kdt_history\KDT_MULTICAMPUS
+New-Item -ItemType File -Path ".env"
+# 그런 다음 파일을 열어 위 내용을 입력하세요
+```
+
+**Linux/Mac:**
 ```bash
-cp .env.example .env
+cd /path/to/KDT_MULTICAMPUS
+touch .env
+# 그런 다음 파일을 열어 위 내용을 입력하세요
 ```
 
-### 2. `.env` 파일 열기 및 수정
+### 방법 2: 시스템 환경 변수로 설정
 
-생성된 `.env` 파일을 열고, `your_xxx_here` 부분을 실제 API 키로 교체하세요.
+시스템 환경 변수로도 설정할 수 있습니다:
 
-```env
-# 예시 (실제 키로 교체)
-VITE_OPENWEATHER_API_KEY=693e8221499578232f3f9ef78bc60cbc
-VITE_PUBLIC_DATA_API_KEY=your_actual_key_here
+**Windows PowerShell:**
+```powershell
+$env:DB_HOST="localhost"
+$env:DB_PORT="3306"
+$env:DB_NAME="fullstack-3"
+$env:DB_USERNAME="root"
+$env:DB_PASSWORD="your_password"
+$env:SERVER_PORT="8081"
+$env:VITE_API_URL="http://localhost:8081"
+$env:VITE_OPENWEATHER_API_KEY="your_key"
+$env:VITE_PUBLIC_DATA_API_KEY="your_key"
 ```
 
-### 3. 파일 위치 확인
-
-`.env` 파일은 프로젝트 루트 디렉토리(`KDT_MULTICAMPUS/`)에 있어야 합니다.
+**Linux/Mac:**
+```bash
+export DB_HOST=localhost
+export DB_PORT=3306
+export DB_NAME=fullstack-3
+export DB_USERNAME=root
+export DB_PASSWORD=your_password
+export SERVER_PORT=8081
+export VITE_API_URL=http://localhost:8081
+export VITE_OPENWEATHER_API_KEY=your_key
+export VITE_PUBLIC_DATA_API_KEY=your_key
 ```
-KDT_MULTICAMPUS/
-├── .env              ← 여기에 생성
-├── .env.example      ← 템플릿 파일 (Git에 포함됨)
-├── package.json
-└── ...
-```
 
-## ⚠️ 중요 사항
+## 📝 환경 변수 설명
+
+### 백엔드 (Spring Boot)
+
+- `DB_HOST`: MySQL 서버 주소 (기본값: localhost)
+- `DB_PORT`: MySQL 포트 (기본값: 3306)
+- `DB_NAME`: 데이터베이스 이름 (기본값: fullstack-3)
+- `DB_USERNAME`: MySQL 사용자명 (기본값: root)
+- `DB_PASSWORD`: MySQL 비밀번호 (**필수**)
+- `SERVER_PORT`: 백엔드 서버 포트 (기본값: 8081)
+
+### 프론트엔드 (Vite/React)
+
+- `VITE_API_URL`: 백엔드 API URL (기본값: http://localhost:8081)
+- `VITE_OPENWEATHER_API_KEY`: OpenWeatherMap API 키 (날씨 정보용)
+- `VITE_PUBLIC_DATA_API_KEY`: 공공데이터포털 API 키 (공휴일 정보용)
+
+**참고**: Vite는 `VITE_` 접두사가 있는 환경 변수만 클라이언트 코드에서 사용 가능합니다.
+
+## ⚠️ 주의사항
 
 1. **`.env` 파일은 절대 Git에 커밋하지 마세요!**
-   - `.gitignore`에 이미 추가되어 있습니다.
-   - API 키가 노출되면 보안 문제가 발생할 수 있습니다.
+   - `.env` 파일은 `.gitignore`에 포함되어 있습니다.
+   - 실제 비밀번호와 API 키가 노출될 수 있습니다.
 
-2. **Vite 환경 변수 규칙**
-   - 환경 변수는 `VITE_` 접두사로 시작해야 합니다.
-   - 코드에서 `import.meta.env.VITE_변수명`으로 접근합니다.
+2. **프론트엔드 환경 변수**
+   - `VITE_` 접두사가 있는 변수는 클라이언트 번들에 포함됩니다.
+   - 민감한 정보는 백엔드에서만 관리하세요.
 
-3. **서버 재시작 필요**
-   - `.env` 파일을 수정한 후에는 개발 서버를 재시작해야 합니다.
-   ```bash
-   # 서버 중지 (Ctrl + C)
-   # 서버 재시작
-   npm start
-   ```
+3. **API 키 발급**
+   - OpenWeatherMap: https://openweathermap.org/api
+   - 공공데이터포털: https://www.data.go.kr
 
-## 📝 현재 하드코딩된 키
+## 🚀 확인 방법
 
-현재 코드에서 다음 키가 하드코딩되어 있습니다:
-- OpenWeatherMap: `693e8221499578232f3f9ef78bc60cbc`
+### 백엔드 테스트
 
-**이 키를 `.env` 파일로 이동하는 것을 권장합니다.**
+```bash
+cd backend
+./gradlew bootRun
+# 또는 Windows에서
+gradlew.bat bootRun
+```
 
-## 🔒 보안 권장사항
+서버가 `http://localhost:8081`에서 실행되면 성공입니다!
 
-1. **개발 환경과 프로덕션 환경 분리**
-   - `.env.development` - 개발 환경용
-   - `.env.production` - 프로덕션 환경용
+### 프론트엔드 테스트
 
-2. **API 키 교체**
-   - 공개 저장소에 키가 노출되었다면 즉시 교체하세요.
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
-3. **키 권한 제한**
-   - 가능하면 API 키에 IP 제한이나 도메인 제한을 설정하세요.
+프론트엔드가 `http://localhost:3000`에서 실행되고, 백엔드와 통신하면 성공입니다!
 
-## 🆘 문제 해결
+## 🔍 문제 해결
 
-### API 키가 작동하지 않는 경우
+### 백엔드가 환경 변수를 못 읽는 경우
 
 1. `.env` 파일이 프로젝트 루트에 있는지 확인
-2. 환경 변수 이름이 `VITE_`로 시작하는지 확인
-3. 개발 서버를 재시작했는지 확인
-4. 브라우저 콘솔에서 오류 메시지 확인
+2. 파일 경로와 이름이 정확한지 확인 (`.env` - 점으로 시작)
+3. 환경 변수 이름이 정확한지 확인 (대소문자 구분)
 
-### OpenWeatherMap API 오류
+### 프론트엔드가 환경 변수를 못 읽는 경우
 
-- API 키가 유효한지 확인
-- 일일 호출 한도 초과 여부 확인
-- 네트워크 연결 확인
+1. 환경 변수에 `VITE_` 접두사가 있는지 확인
+2. 서버를 재시작 (환경 변수 변경 시 반드시 재시작 필요)
+3. 브라우저 캐시 삭제
+
+## 📚 참고
+
+- [Spring Boot Environment Variables](https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#features.external-config)
+- [Vite Environment Variables](https://vitejs.dev/guide/env-and-mode.html)
 
